@@ -156,3 +156,19 @@ func LoopLength(l *ListNode) int {
 	}
 	return length
 }
+
+func Reversed(l *ListNode) *ListNode {
+	if l == nil {
+		return nil
+	}
+
+	var s *ListNode
+	ptr := l
+	for ptr != nil {
+		bkp := ptr.Next
+		ptr.Next = s
+		s = ptr
+		ptr = bkp
+	}
+	return s
+}

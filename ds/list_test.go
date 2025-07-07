@@ -136,4 +136,20 @@ func TestList(t *testing.T) {
 			require.Equal(t, 3, ds.LoopLength(l))
 		})
 	})
+
+	t.Run("reverses the list", func(t *testing.T) {
+		t.Run("empty list", func(t *testing.T) {
+			require.Nil(t, ds.Reversed(nil))
+		})
+
+		t.Run("single node list", func(t *testing.T) {
+			require.Equal(t, fromArray([]int{1}), ds.Reversed(newNode(1)))
+		})
+
+		t.Run("multiple node list", func(t *testing.T) {
+			require.Equal(t, fromArray([]int{5, 4, 3, 2, 1}), ds.Reversed(
+				fromArray([]int{1, 2, 3, 4, 5}),
+			))
+		})
+	})
 }
