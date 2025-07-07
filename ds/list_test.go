@@ -82,4 +82,27 @@ func TestList(t *testing.T) {
 			require.True(t, ds.HasCycle(cyclePtr))
 		})
 	})
+
+	t.Run("finds the beginning of the cycle", func(t *testing.T) {
+		t.Run("returns nil when list is nil-terminaned", func(t *testing.T) {
+			require.Nil(t, ds.FindBeginningOfCycle(fromArray([]int{1, 2, 3, 4, 5})))
+			require.Nil(t, ds.FindBeginningOfCycle(fromArray([]int{1})))
+			require.Nil(t, ds.FindBeginningOfCycle(nil))
+		})
+
+		t.Run("true when list has a cycle", func(t *testing.T) {
+			cyclePtr := newNode(3)
+			endPtr := newList(5, cyclePtr)
+			cyclePtr.Next = newList(4, endPtr)
+			l := newList(1, newList(2, cyclePtr))
+
+			require.Equal(t, cyclePtr, ds.FindBeginningOfCycle(l))
+		})
+
+		t.Run("single node cycle", func(t *testing.T) {
+			cyclePtr := newNode(3)
+			cyclePtr.Next = cyclePtr
+			require.Equal(t, cyclePtr, ds.FindBeginningOfCycle(cyclePtr))
+		})
+	})
 }
