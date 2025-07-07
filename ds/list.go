@@ -126,3 +126,33 @@ func FindBeginningOfCycle(l *ListNode) *ListNode {
 
 	return slowPtr
 }
+
+func FindLengthOfCycle(l *ListNode) int {
+	if l == nil {
+		return 0
+	}
+
+	slowPtr := l
+	fastPtr := l
+	hasCycle := false
+
+	for fastPtr.Next != nil && fastPtr.Next.Next != nil {
+		slowPtr = slowPtr.Next
+		fastPtr = fastPtr.Next.Next
+		if slowPtr == fastPtr {
+			hasCycle = true
+			break
+		}
+	}
+
+	if !hasCycle {
+		return 0
+	}
+
+	length := 1
+	for fastPtr.Next != slowPtr {
+		fastPtr = fastPtr.Next
+		length++
+	}
+	return length
+}

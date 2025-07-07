@@ -90,7 +90,17 @@ func TestList(t *testing.T) {
 			require.Nil(t, ds.FindBeginningOfCycle(nil))
 		})
 
-		t.Run("true when list has a cycle", func(t *testing.T) {
+		t.Run("the correct pointer for cycles with length 1", func(t *testing.T) {
+			cyclePtr := newNode(3)
+			cyclePtr.Next = cyclePtr
+			require.Equal(t, cyclePtr, ds.FindBeginningOfCycle(cyclePtr))
+
+			require.Equal(t, cyclePtr, ds.FindBeginningOfCycle(
+				newList(1, newList(2, cyclePtr)),
+			))
+		})
+
+		t.Run("the correct pointer for cycles with length > 1", func(t *testing.T) {
 			cyclePtr := newNode(3)
 			endPtr := newList(5, cyclePtr)
 			cyclePtr.Next = newList(4, endPtr)
@@ -98,11 +108,32 @@ func TestList(t *testing.T) {
 
 			require.Equal(t, cyclePtr, ds.FindBeginningOfCycle(l))
 		})
+	})
 
-		t.Run("single node cycle", func(t *testing.T) {
+	t.Run("finds the length of the cycle", func(t *testing.T) {
+		t.Run("returns 0 when the list is nil-terminated", func(t *testing.T) {
+			require.Equal(t, 0, ds.FindLengthOfCycle(fromArray([]int{1, 2, 3, 4, 5})))
+			require.Equal(t, 0, ds.FindLengthOfCycle(fromArray([]int{1})))
+			require.Equal(t, 0, ds.FindLengthOfCycle(nil))
+		})
+
+		t.Run("returns 1 when the list has a single node cycle", func(t *testing.T) {
 			cyclePtr := newNode(3)
 			cyclePtr.Next = cyclePtr
-			require.Equal(t, cyclePtr, ds.FindBeginningOfCycle(cyclePtr))
+			require.Equal(t, 1, ds.FindLengthOfCycle(cyclePtr))
+
+			require.Equal(t, 1, ds.FindLengthOfCycle(
+				newList(1, newList(2, cyclePtr)),
+			))
+		})
+
+		t.Run("the correct length for cycles with length > 1", func(t *testing.T) {
+			cyclePtr := newNode(3)
+			endPtr := newList(5, cyclePtr)
+			cyclePtr.Next = newList(4, endPtr)
+			l := newList(1, newList(2, cyclePtr))
+
+			require.Equal(t, 3, ds.FindLengthOfCycle(l))
 		})
 	})
 }
