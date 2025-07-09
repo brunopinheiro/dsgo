@@ -22,6 +22,16 @@ func (l *ListNode) Append(newNode *ListNode) {
 	cursor.Next = newNode
 }
 
+func (l *ListNode) Length() int {
+	length := 1
+	cursor := l
+	for cursor != nil {
+		length++
+		cursor = cursor.Next
+	}
+	return length
+}
+
 func (l *ListNode) Display() string {
 	values := []string{}
 	cursor := l
@@ -160,3 +170,37 @@ func ReverseList(l *ListNode) *ListNode {
 	}
 	return newHead
 }
+
+func FindListsMergePoint(l1 *ListNode, l2 *ListNode) *ListNode {
+	if l1 == nil || l2 == nil {
+		return nil
+	}
+
+	l1Current := l1
+	l2Current := l2
+
+	l1Len := l1.Length() //O(n)
+	l2Len := l2.Length() //O(n)
+
+	if l1Len > l2Len {
+		diff := l1Len - l2Len
+		for range diff {
+			l1Current = l1Current.Next //O(diff) => O(n)
+		}
+	} else {
+		diff := l2Len - l1Len
+		for range diff {
+			l2Current = l2Current.Next //O(diff) => O(n)
+		}
+	}
+
+	for l1Current != nil && l2Current != nil {
+		if l1Current == l2Current {
+			return l1Current
+		}
+		l1Current = l1Current.Next
+		l2Current = l2Current.Next
+	} //O(n)
+
+	return nil
+} //O(3n) => O(n)

@@ -145,4 +145,79 @@ func TestList(t *testing.T) {
 			))
 		})
 	})
+
+	t.Run("finds list merge point", func(t *testing.T) {
+		t.Run("returns nil when there is no merge point", func(t *testing.T) {
+			require.Nil(t, ds.FindListsMergePoint(
+				fromArray([]int{1, 2, 3}),
+				fromArray([]int{4, 5, 6}),
+			))
+
+			require.Nil(t, ds.FindListsMergePoint(
+				nil,
+				fromArray([]int{4, 5, 6}),
+			))
+
+			require.Nil(t, ds.FindListsMergePoint(
+				fromArray([]int{1, 2, 3}),
+				nil,
+			))
+		})
+
+		t.Run("when there's a merge point", func(t *testing.T) {
+			sharedList := fromArray([]int{7, 8, 9})
+
+			t.Run("and one of the lists starts at the merge point", func(t *testing.T) {
+				require.Equal(
+					t,
+					sharedList,
+					ds.FindListsMergePoint(
+						sharedList,
+						newList(5, newList(6, sharedList)),
+					),
+				)
+
+				require.Equal(
+					t,
+					sharedList,
+					ds.FindListsMergePoint(
+						newList(5, newList(6, sharedList)),
+						sharedList,
+					),
+				)
+			})
+
+			t.Run("and lists have the same length", func(t *testing.T) {
+				require.Equal(
+					t,
+					sharedList,
+					ds.FindListsMergePoint(
+						newList(1, newList(2, sharedList)),
+						newList(5, newList(6, sharedList)),
+					),
+				)
+			})
+
+			t.Run("and lists have different lengths", func(t *testing.T) {
+				require.Equal(
+					t,
+					sharedList,
+					ds.FindListsMergePoint(
+						newList(1, newList(2, newList(3, newList(4, sharedList)))),
+						newList(5, newList(6, sharedList)),
+					),
+				)
+
+				require.Equal(
+					t,
+					sharedList,
+					ds.FindListsMergePoint(
+						newList(4, newList(5, newList(6, sharedList))),
+						newList(1, sharedList),
+					),
+				)
+			})
+		})
+
+	})
 }
