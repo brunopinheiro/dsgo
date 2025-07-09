@@ -14,17 +14,17 @@ func NewListNode(value int, next *ListNode) *ListNode {
 	return &ListNode{Value: value, Next: next}
 }
 
-func (n *ListNode) Append(newNode *ListNode) {
-	cursor := n
+func (l *ListNode) Append(newNode *ListNode) {
+	cursor := l
 	for cursor.Next != nil {
 		cursor = cursor.Next
 	}
 	cursor.Next = newNode
 }
 
-func (n *ListNode) Display() string {
+func (l *ListNode) Display() string {
 	values := []string{}
-	cursor := n
+	cursor := l
 	for cursor != nil {
 		values = append(values, fmt.Sprintf("%d", cursor.Value))
 		cursor = cursor.Next
@@ -32,7 +32,7 @@ func (n *ListNode) Display() string {
 	return strings.Join(values, "->")
 }
 
-func FindKthElementFromEnd(l *ListNode, k uint) (int, bool) {
+func (l *ListNode) KthElementFromEnd(k uint) (int, bool) {
 	firstPtr := l
 	kthPtr := l
 
@@ -55,11 +55,7 @@ func FindKthElementFromEnd(l *ListNode, k uint) (int, bool) {
 	return kthPtr.Value, true
 }
 
-func HasLoop(l *ListNode) bool {
-	if l == nil {
-		return false
-	}
-
+func (l *ListNode) HasLoop() bool {
 	slowPtr := l
 	fastPtr := l
 
@@ -96,11 +92,7 @@ Why does it work? (for lists with loop)
   - slow pointer will be at position 0
   - fast pointer will be at position (L - n) + n => L <=> 0
 */
-func FindLoopStart(l *ListNode) *ListNode {
-	if l == nil {
-		return nil
-	}
-
+func (l *ListNode) LoopStart() *ListNode {
 	slowPtr := l
 	fastPtr := l
 	hasLoop := false
@@ -127,11 +119,7 @@ func FindLoopStart(l *ListNode) *ListNode {
 	return slowPtr
 }
 
-func LoopLength(l *ListNode) int {
-	if l == nil {
-		return 0
-	}
-
+func (l *ListNode) LoopLength() int {
 	slowPtr := l
 	fastPtr := l
 	hasLoop := false
@@ -157,18 +145,18 @@ func LoopLength(l *ListNode) int {
 	return length
 }
 
-func Reversed(l *ListNode) *ListNode {
+func ReverseList(l *ListNode) *ListNode {
 	if l == nil {
 		return nil
 	}
 
-	var s *ListNode
+	var newHead *ListNode
 	ptr := l
 	for ptr != nil {
 		bkp := ptr.Next
-		ptr.Next = s
-		s = ptr
+		ptr.Next = newHead
+		newHead = ptr
 		ptr = bkp
 	}
-	return s
+	return newHead
 }

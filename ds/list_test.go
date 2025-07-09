@@ -39,33 +39,32 @@ func TestList(t *testing.T) {
 
 	t.Run("finds the kth element from the end", func(t *testing.T) {
 		t.Run("returns not found when k is greater than the length of the list", func(t *testing.T) {
-			_, found := ds.FindKthElementFromEnd(fromArray([]int{1, 2, 3, 4, 5}), 6)
+			_, found := fromArray([]int{1, 2, 3, 4, 5}).KthElementFromEnd(6)
 			require.False(t, found)
 		})
 
 		t.Run("returns the first element when k is equal to the length of the list", func(t *testing.T) {
-			value, found := ds.FindKthElementFromEnd(fromArray([]int{1, 2, 3, 4, 5}), 5)
+			value, found := fromArray([]int{1, 2, 3, 4, 5}).KthElementFromEnd(5)
 			require.True(t, found)
 			require.Equal(t, 1, value)
 		})
 
 		t.Run("returns the correct value when k is less than the length of the list", func(t *testing.T) {
-			value, found := ds.FindKthElementFromEnd(fromArray([]int{1, 2, 3, 4, 5}), 3)
+			value, found := fromArray([]int{1, 2, 3, 4, 5}).KthElementFromEnd(3)
 			require.True(t, found)
 			require.Equal(t, 3, value)
 		})
 
 		t.Run("returns not found when k is 0", func(t *testing.T) {
-			_, found := ds.FindKthElementFromEnd(fromArray([]int{1, 2, 3, 4, 5}), 0)
+			_, found := fromArray([]int{1, 2, 3, 4, 5}).KthElementFromEnd(0)
 			require.False(t, found)
 		})
 	})
 
 	t.Run("returns if list has a loop or not", func(t *testing.T) {
 		t.Run("false when list is nil-terminated", func(t *testing.T) {
-			require.False(t, ds.HasLoop(fromArray([]int{1, 2, 3, 4, 5})))
-			require.False(t, ds.HasLoop(fromArray([]int{1})))
-			require.False(t, ds.HasLoop(nil))
+			require.False(t, fromArray([]int{1, 2, 3, 4, 5}).HasLoop())
+			require.False(t, fromArray([]int{1}).HasLoop())
 		})
 
 		t.Run("true when list has a loop", func(t *testing.T) {
@@ -73,31 +72,28 @@ func TestList(t *testing.T) {
 			endPtr := newList(5, loopPtr)
 			loopPtr.Next = newList(4, endPtr)
 			l := newList(1, newList(2, loopPtr))
-			require.True(t, ds.HasLoop(l))
+			require.True(t, l.HasLoop())
 		})
 
 		t.Run("single node loop", func(t *testing.T) {
 			loopPtr := newNode(3)
 			loopPtr.Next = loopPtr
-			require.True(t, ds.HasLoop(loopPtr))
+			require.True(t, loopPtr.HasLoop())
 		})
 	})
 
 	t.Run("finds the beginning of the loop", func(t *testing.T) {
 		t.Run("returns nil when list is nil-terminaned", func(t *testing.T) {
-			require.Nil(t, ds.FindLoopStart(fromArray([]int{1, 2, 3, 4, 5})))
-			require.Nil(t, ds.FindLoopStart(fromArray([]int{1})))
-			require.Nil(t, ds.FindLoopStart(nil))
+			require.Nil(t, fromArray([]int{1, 2, 3, 4, 5}).LoopStart())
+			require.Nil(t, fromArray([]int{1}).LoopStart())
 		})
 
 		t.Run("the correct pointer for loops with length 1", func(t *testing.T) {
 			loopPtr := newNode(3)
 			loopPtr.Next = loopPtr
-			require.Equal(t, loopPtr, ds.FindLoopStart(loopPtr))
+			require.Equal(t, loopPtr, loopPtr.LoopStart())
 
-			require.Equal(t, loopPtr, ds.FindLoopStart(
-				newList(1, newList(2, loopPtr)),
-			))
+			require.Equal(t, loopPtr, newList(1, newList(2, loopPtr)).LoopStart())
 		})
 
 		t.Run("the correct pointer for loops with length > 1", func(t *testing.T) {
@@ -106,25 +102,22 @@ func TestList(t *testing.T) {
 			loopPtr.Next = newList(4, endPtr)
 			l := newList(1, newList(2, loopPtr))
 
-			require.Equal(t, loopPtr, ds.FindLoopStart(l))
+			require.Equal(t, loopPtr, l.LoopStart())
 		})
 	})
 
 	t.Run("finds the length of the loop", func(t *testing.T) {
 		t.Run("returns 0 when the list is nil-terminated", func(t *testing.T) {
-			require.Equal(t, 0, ds.LoopLength(fromArray([]int{1, 2, 3, 4, 5})))
-			require.Equal(t, 0, ds.LoopLength(fromArray([]int{1})))
-			require.Equal(t, 0, ds.LoopLength(nil))
+			require.Equal(t, 0, fromArray([]int{1, 2, 3, 4, 5}).LoopLength())
+			require.Equal(t, 0, fromArray([]int{1}).LoopLength())
 		})
 
 		t.Run("returns 1 when the list has a single node loop", func(t *testing.T) {
 			loopPtr := newNode(3)
 			loopPtr.Next = loopPtr
-			require.Equal(t, 1, ds.LoopLength(loopPtr))
+			require.Equal(t, 1, loopPtr.LoopLength())
 
-			require.Equal(t, 1, ds.LoopLength(
-				newList(1, newList(2, loopPtr)),
-			))
+			require.Equal(t, 1, newList(1, newList(2, loopPtr)).LoopLength())
 		})
 
 		t.Run("the correct length for loops with length > 1", func(t *testing.T) {
@@ -133,21 +126,21 @@ func TestList(t *testing.T) {
 			loopPtr.Next = newList(4, endPtr)
 			l := newList(1, newList(2, loopPtr))
 
-			require.Equal(t, 3, ds.LoopLength(l))
+			require.Equal(t, 3, l.LoopLength())
 		})
 	})
 
 	t.Run("reverses the list", func(t *testing.T) {
 		t.Run("empty list", func(t *testing.T) {
-			require.Nil(t, ds.Reversed(nil))
+			require.Nil(t, ds.ReverseList(nil))
 		})
 
 		t.Run("single node list", func(t *testing.T) {
-			require.Equal(t, fromArray([]int{1}), ds.Reversed(newNode(1)))
+			require.Equal(t, fromArray([]int{1}), ds.ReverseList(newNode(1)))
 		})
 
 		t.Run("multiple node list", func(t *testing.T) {
-			require.Equal(t, fromArray([]int{5, 4, 3, 2, 1}), ds.Reversed(
+			require.Equal(t, fromArray([]int{5, 4, 3, 2, 1}), ds.ReverseList(
 				fromArray([]int{1, 2, 3, 4, 5}),
 			))
 		})
