@@ -243,4 +243,47 @@ func TestList(t *testing.T) {
 		require.True(t, fromArray([]int{1, 2, 3, 4, 5, 6}).HasEvenLength())
 	})
 
+	t.Run("merge two sorted lists", func(t *testing.T) {
+		t.Run("when one of the lists is empty", func(t *testing.T) {
+			require.Equal(
+				t,
+				ds.MergeSortedLists(
+					nil,
+					fromArray([]int{1, 2, 3, 4, 5}),
+				).Display(),
+				"1->2->3->4->5",
+			)
+
+			require.Equal(
+				t,
+				ds.MergeSortedLists(
+					fromArray([]int{6, 7, 8, 9}),
+					nil,
+				).Display(),
+				"6->7->8->9",
+			)
+		})
+
+		t.Run("when one of the lists has every element smaller than the other list's elements", func(t *testing.T) {
+			require.Equal(
+				t,
+				ds.MergeSortedLists(
+					fromArray([]int{1, 2, 3, 4, 5}),
+					fromArray([]int{6, 7, 8, 9}),
+				).Display(),
+				"1->2->3->4->5->6->7->8->9",
+			)
+		})
+
+		t.Run("when the order of the elements are mixed between the lists", func(t *testing.T) {
+			require.Equal(
+				t,
+				ds.MergeSortedLists(
+					fromArray([]int{3, 4, 6, 7}),
+					fromArray([]int{1, 2, 5, 8, 9}),
+				).Display(),
+				"1->2->3->4->5->6->7->8->9",
+			)
+		})
+	})
 }

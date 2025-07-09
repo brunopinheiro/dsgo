@@ -230,3 +230,23 @@ func FindListsMergePoint(l1 *ListNode, l2 *ListNode) *ListNode {
 
 	return nil
 } //O(3n) => O(n)
+
+func MergeSortedLists(l1 *ListNode, l2 *ListNode) *ListNode {
+	// for simplicity, I will assume that both lists are sorted
+
+	if l1 == nil {
+		return l2
+	}
+
+	if l2 == nil {
+		return l1
+	}
+
+	if l1.Value < l2.Value {
+		l1.Next = MergeSortedLists(l1.Next, l2)
+		return l1
+	}
+
+	l2.Next = MergeSortedLists(l1, l2.Next)
+	return l2
+}
