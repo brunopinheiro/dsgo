@@ -229,4 +229,12 @@ func TestList(t *testing.T) {
 			require.Equal(t, 4, fromArray([]int{1, 2, 3, 4, 5, 6}).Middle())
 		})
 	})
+
+	t.Run("reverse display", func(t *testing.T) {
+		l := fromArray([]int{1, 2, 3, 4, 5})
+		require.Equal(t, "5->4->3->2->1", l.ReverseDisplay())
+		require.Equal(t, "1->2->3->4->5", l.Display()) // it does not alter the list
+
+		require.Equal(t, "1", fromArray([]int{1}).ReverseDisplay())
+	})
 }

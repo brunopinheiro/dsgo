@@ -42,6 +42,14 @@ func (l *ListNode) Display() string {
 	return strings.Join(values, "->")
 }
 
+func (l *ListNode) ReverseDisplay() string {
+	if l.Next == nil {
+		return fmt.Sprintf("%d", l.Value)
+	}
+
+	return l.Next.ReverseDisplay() + fmt.Sprintf("->%d", l.Value)
+}
+
 func (l *ListNode) KthElementFromEnd(k uint) (int, bool) {
 	firstPtr := l
 	kthPtr := l
