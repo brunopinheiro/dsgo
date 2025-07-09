@@ -32,6 +32,14 @@ func (l *ListNode) Length() int {
 	return length
 }
 
+func (l *ListNode) HasEvenLength() bool {
+	cursor := l
+	for cursor != nil && cursor.Next != nil {
+		cursor = cursor.Next.Next
+	}
+	return cursor == nil
+}
+
 func (l *ListNode) Display() string {
 	values := []string{}
 	cursor := l

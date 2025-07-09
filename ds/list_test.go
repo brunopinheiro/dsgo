@@ -237,4 +237,10 @@ func TestList(t *testing.T) {
 
 		require.Equal(t, "1", fromArray([]int{1}).ReverseDisplay())
 	})
+
+	t.Run("has even length", func(t *testing.T) {
+		require.False(t, fromArray([]int{1, 2, 3, 4, 5}).HasEvenLength())
+		require.True(t, fromArray([]int{1, 2, 3, 4, 5, 6}).HasEvenLength())
+	})
+
 }
