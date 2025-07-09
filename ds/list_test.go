@@ -218,6 +218,15 @@ func TestList(t *testing.T) {
 				)
 			})
 		})
+	})
 
+	t.Run("middle of the list", func(t *testing.T) {
+		t.Run("with an odd number of elements", func(t *testing.T) {
+			require.Equal(t, 3, fromArray([]int{1, 2, 3, 4, 5}).Middle())
+		})
+
+		t.Run("with an even number of elements", func(t *testing.T) {
+			require.Equal(t, 4, fromArray([]int{1, 2, 3, 4, 5, 6}).Middle())
+		})
 	})
 }

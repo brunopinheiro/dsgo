@@ -155,6 +155,16 @@ func (l *ListNode) LoopLength() int {
 	return length
 }
 
+func (l *ListNode) Middle() int {
+	slowPtr := l
+	fastPtr := l
+	for fastPtr != nil && fastPtr.Next != nil {
+		slowPtr = slowPtr.Next
+		fastPtr = fastPtr.Next.Next
+	}
+	return slowPtr.Value
+}
+
 func ReverseList(l *ListNode) *ListNode {
 	if l == nil {
 		return nil
