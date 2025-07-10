@@ -250,3 +250,16 @@ func MergeSortedLists(l1 *ListNode, l2 *ListNode) *ListNode {
 	l2.Next = MergeSortedLists(l1, l2.Next)
 	return l2
 }
+
+func ReverseListInPairs(l *ListNode) *ListNode {
+	if l == nil || l.Next == nil {
+		return l
+	}
+
+	bkp := l.Next.Next
+	newHead := l.Next
+	newHead.Next = l
+	l.Next = ReverseListInPairs(bkp)
+
+	return newHead
+}

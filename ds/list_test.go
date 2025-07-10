@@ -286,4 +286,38 @@ func TestList(t *testing.T) {
 			)
 		})
 	})
+
+	t.Run("reverse in pairs", func(t *testing.T) {
+		t.Run("with an empty list", func(t *testing.T) {
+			require.Nil(t, ds.ReverseListInPairs(nil))
+		})
+
+		t.Run("with a single element", func(t *testing.T) {
+			require.Equal(
+				t,
+				ds.ReverseListInPairs(newNode(1)).Display(),
+				"1",
+			)
+		})
+
+		t.Run("with an even number of elements", func(t *testing.T) {
+			require.Equal(
+				t,
+				ds.ReverseListInPairs(
+					fromArray([]int{1, 2, 3, 4, 5, 6}),
+				).Display(),
+				"2->1->4->3->6->5",
+			)
+		})
+
+		t.Run("with an even number of elements", func(t *testing.T) {
+			require.Equal(
+				t,
+				ds.ReverseListInPairs(
+					fromArray([]int{1, 2, 3, 4, 5}),
+				).Display(),
+				"2->1->4->3->5",
+			)
+		})
+	})
 }
