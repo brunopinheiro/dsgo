@@ -293,3 +293,29 @@ func ReverseListInPairs(l *ListNode) *ListNode {
 
 	return newHead
 }
+
+func ReverseListInGroupsOfK(l *ListNode, k int) *ListNode {
+	// made a decision to not test validation errors like this one
+	if k < 1 {
+		panic("k must be greater than 0")
+	}
+
+	if l == nil || l.Next == nil || k == 1 {
+		return l
+	}
+
+	count := 1
+	newHead := l
+	cursor := l.Next
+	for cursor != nil && count < k {
+		count++
+		bkp := cursor.Next
+		cursor.Next = newHead
+		newHead = cursor
+		l.Next = bkp
+		cursor = bkp
+	}
+
+	l.Next = ReverseListInGroupsOfK(cursor, k)
+	return newHead
+}

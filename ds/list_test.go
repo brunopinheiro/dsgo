@@ -342,4 +342,61 @@ func TestList(t *testing.T) {
 			require.Equal(t, "1->2->3->3->2->1", evenL.Display())
 		})
 	})
+
+	t.Run("reverse the list in groups of K", func(t *testing.T) {
+		t.Run("returns nil for empty list", func(t *testing.T) {
+			actual := ds.ReverseListInGroupsOfK(nil, 1)
+			require.Nil(t, actual)
+		})
+
+		t.Run("with a list of a single element", func(t *testing.T) {
+			actual := ds.ReverseListInGroupsOfK(newNode(1), 1)
+			require.Equal(t, newNode(1), actual)
+		})
+
+		t.Run("does not change the list when K is 1", func(t *testing.T) {
+			actual := ds.ReverseListInGroupsOfK(fromArray([]int{1, 2, 3, 4, 5}), 1)
+			require.Equal(
+				t,
+				"1->2->3->4->5",
+				actual.Display(),
+			)
+		})
+
+		t.Run("reverses the entire list when K is greater than or equal to list size", func(t *testing.T) {
+			actual := ds.ReverseListInGroupsOfK(fromArray([]int{1, 2, 3, 4, 5}), 5)
+			require.Equal(
+				t,
+				"5->4->3->2->1",
+				actual.Display(),
+			)
+
+			actual = ds.ReverseListInGroupsOfK(fromArray([]int{1, 2, 3, 4, 5}), 6)
+			require.Equal(
+				t,
+				"5->4->3->2->1",
+				actual.Display(),
+			)
+		})
+
+		t.Run("with a list of multiple elements and 1 < K < list size", func(t *testing.T) {
+			t.Run("with K dividing the list in groups of same size", func(t *testing.T) {
+				actual := ds.ReverseListInGroupsOfK(fromArray([]int{1, 2, 3, 4, 5, 6}), 3)
+				require.Equal(
+					t,
+					"3->2->1->6->5->4",
+					actual.Display(),
+				)
+			})
+
+			t.Run("with K not dividing the list in groups of different sizes", func(t *testing.T) {
+				actual := ds.ReverseListInGroupsOfK(fromArray([]int{1, 2, 3, 4, 5, 6}), 4)
+				require.Equal(
+					t,
+					"4->3->2->1->6->5",
+					actual.Display(),
+				)
+			})
+		})
+	})
 }
