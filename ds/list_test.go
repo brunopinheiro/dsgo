@@ -320,4 +320,26 @@ func TestList(t *testing.T) {
 			)
 		})
 	})
+
+	t.Run("is palindrome", func(t *testing.T) {
+		t.Run("returns the correct response", func(t *testing.T) {
+			require.True(t, newNode(1).IsPalindrome())
+			require.False(t, newList(1, newNode(2)).IsPalindrome())
+			require.True(t, newList(1, newNode(1)).IsPalindrome())
+			require.True(t, fromArray([]int{1, 2, 3, 3, 2, 1}).IsPalindrome())
+			require.False(t, fromArray([]int{1, 2, 4, 3, 2, 1}).IsPalindrome())
+			require.True(t, fromArray([]int{1, 2, 3, 4, 3, 2, 1}).IsPalindrome())
+			require.False(t, fromArray([]int{1, 2, 4, 4, 3, 2, 1}).IsPalindrome())
+		})
+
+		t.Run("it does not modify the list", func(t *testing.T) {
+			oddL := fromArray([]int{1, 2, 3, 4, 3, 2, 1})
+			oddL.IsPalindrome()
+			require.Equal(t, "1->2->3->4->3->2->1", oddL.Display())
+
+			evenL := fromArray([]int{1, 2, 3, 3, 2, 1})
+			evenL.IsPalindrome()
+			require.Equal(t, "1->2->3->3->2->1", evenL.Display())
+		})
+	})
 }

@@ -181,6 +181,36 @@ func (l *ListNode) Middle() int {
 	return slowPtr.Value
 }
 
+func (l *ListNode) IsPalindrome() bool {
+	if l.Next == nil {
+		return true
+	}
+
+	slowPtr := l
+	fastPtr := l
+	for fastPtr.Next != nil && fastPtr.Next.Next != nil {
+		slowPtr = slowPtr.Next
+		fastPtr = fastPtr.Next.Next
+	} //O(n/2)
+
+	rightHalf := ReverseList(slowPtr.Next) //O(n/2)
+	slowPtr.Next = nil
+
+	leftPtr := l
+	rightPtr := rightHalf
+	for rightPtr != nil {
+		if leftPtr.Value != rightPtr.Value {
+			slowPtr.Next = ReverseList(rightHalf)
+			return false
+		}
+		leftPtr = leftPtr.Next
+		rightPtr = rightPtr.Next
+	} //O(n/2)
+
+	slowPtr.Next = ReverseList(rightHalf) //O(n/2)
+	return true
+} //O(4n/2) -> O(2n) -> O(n)
+
 func ReverseList(l *ListNode) *ListNode {
 	if l == nil {
 		return nil
