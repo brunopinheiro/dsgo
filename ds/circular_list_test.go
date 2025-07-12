@@ -60,4 +60,30 @@ func TestCircularList(t *testing.T) {
 			require.Equal(t, "4->5->6", right.Display())
 		})
 	})
+
+	t.Run("josephus circle", func(t *testing.T) {
+		t.Run("with a single element list", func(t *testing.T) {
+			require.Equal(
+				t,
+				2,
+				fromArray([]int{2}).JosephusCircle(1),
+			)
+		})
+
+		t.Run("with K equals 1", func(t *testing.T) {
+			require.Equal(
+				t,
+				7,
+				fromArray([]int{1, 2, 3, 4, 5, 6, 7}).JosephusCircle(1),
+			)
+		})
+
+		t.Run("with K greater than 1", func(t *testing.T) {
+			require.Equal(
+				t,
+				4,
+				fromArray([]int{1, 2, 3, 4, 5, 6, 7}).JosephusCircle(3),
+			)
+		})
+	})
 }

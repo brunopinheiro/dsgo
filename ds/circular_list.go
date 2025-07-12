@@ -37,6 +37,34 @@ func (l *CircularListNode) Append(value int) {
 	cursor.Next = &CircularListNode{Value: value, Next: l}
 }
 
+func (l *CircularListNode) JosephusCircle(k int) int {
+	if k < 1 {
+		panic("k must be greater than 0")
+	}
+
+	// to be able to remove the first player and keep
+	// the counting consistent, we need to start prev at the last element
+	// not sure if there's something we can do here to avoid this extra step
+	// :thinking_face: maybe create a wrapper structure that can keep a reference to the last node
+	prev := l
+	cursor := l.Next
+	for cursor != l {
+		prev = prev.Next
+		cursor = cursor.Next
+	}
+
+	for cursor != prev {
+		for range k - 1 {
+			prev = prev.Next
+			cursor = cursor.Next
+		}
+		prev.Next = cursor.Next
+		cursor = cursor.Next
+	}
+
+	return cursor.Value
+}
+
 func SplitCircularListInHalf(l *CircularListNode) (*CircularListNode, *CircularListNode) {
 	if l == nil {
 		return nil, nil
