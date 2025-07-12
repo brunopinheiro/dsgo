@@ -319,3 +319,13 @@ func ReverseListInGroupsOfK(l *ListNode, k int) *ListNode {
 	l.Next = ReverseListInGroupsOfK(cursor, k)
 	return newHead
 }
+
+func DeleteListPointer(l *ListNode) {
+	// made a decision to not test validation errors
+	if l.Next == nil {
+		panic("pointer cannot be at the end of the list")
+	}
+
+	l.Value = l.Next.Value
+	l.Next = l.Next.Next
+}

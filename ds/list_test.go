@@ -399,4 +399,13 @@ func TestList(t *testing.T) {
 			})
 		})
 	})
+
+	t.Run("deletes pointer which is at the middle of a list", func(t *testing.T) {
+		t.Run("when pointer is the tail of the list", func(t *testing.T) {
+			targetPtr := newList(4, newList(5, newNode(6)))
+			l := newList(1, newList(2, newList(3, targetPtr)))
+			ds.DeleteListPointer(targetPtr)
+			require.Equal(t, "1->2->3->5->6", l.Display())
+		})
+	})
 }
