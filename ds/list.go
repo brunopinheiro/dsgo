@@ -14,14 +14,6 @@ func NewListNode(value int, next *ListNode) *ListNode {
 	return &ListNode{Value: value, Next: next}
 }
 
-func (l *ListNode) Append(newNode *ListNode) {
-	cursor := l
-	for cursor.Next != nil {
-		cursor = cursor.Next
-	}
-	cursor.Next = newNode
-}
-
 func (l *ListNode) Length() int {
 	length := 1
 	cursor := l
@@ -30,14 +22,6 @@ func (l *ListNode) Length() int {
 		cursor = cursor.Next
 	}
 	return length
-}
-
-func (l *ListNode) HasEvenLength() bool {
-	cursor := l
-	for cursor != nil && cursor.Next != nil {
-		cursor = cursor.Next.Next
-	}
-	return cursor == nil
 }
 
 func (l *ListNode) Display() string {
@@ -50,12 +34,12 @@ func (l *ListNode) Display() string {
 	return strings.Join(values, "->")
 }
 
-func (l *ListNode) ReverseDisplay() string {
-	if l.Next == nil {
-		return fmt.Sprintf("%d", l.Value)
+func (l *ListNode) HasEvenLength() bool {
+	cursor := l
+	for cursor != nil && cursor.Next != nil {
+		cursor = cursor.Next.Next
 	}
-
-	return l.Next.ReverseDisplay() + fmt.Sprintf("->%d", l.Value)
+	return cursor == nil
 }
 
 func (l *ListNode) KthElementFromEnd(k uint) (int, bool) {
@@ -210,6 +194,50 @@ func (l *ListNode) IsPalindrome() bool {
 	slowPtr.Next = ReverseList(rightHalf) //O(n/2)
 	return true
 } //O(4n/2) -> O(2n) -> O(n)
+
+func (l *ListNode) ReverseDisplay() string {
+	if l.Next == nil {
+		return fmt.Sprintf("%d", l.Value)
+	}
+
+	return l.Next.ReverseDisplay() + fmt.Sprintf("->%d", l.Value)
+}
+
+// mutating functions
+
+func AppendToList(l *ListNode, newNode *ListNode) *ListNode {
+	if l == nil {
+		return newNode
+	}
+
+	cursor := l
+	for cursor.Next != nil {
+		cursor = cursor.Next
+	}
+	cursor.Next = newNode
+	return l
+}
+
+func MoveListEvensToTheLeft(l *ListNode) *ListNode {
+	if l == nil {
+		return nil
+	}
+
+	var evenList *ListNode
+	var oddList *ListNode
+	cursor := l
+	for cursor != nil {
+		bkp := cursor.Next
+		cursor.Next = nil
+		if cursor.Value%2 == 0 {
+			evenList = AppendToList(evenList, cursor)
+		} else {
+			oddList = AppendToList(oddList, cursor)
+		}
+		cursor = bkp
+	}
+	return AppendToList(evenList, oddList)
+}
 
 func ReverseList(l *ListNode) *ListNode {
 	if l == nil {

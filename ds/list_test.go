@@ -9,19 +9,6 @@ import (
 )
 
 func TestList(t *testing.T) {
-	fromArray := func(values []int) *ds.ListNode {
-		var l *ds.ListNode
-		for i, v := range values {
-			if i == 0 {
-				l = ds.NewListNode(v, nil)
-				continue
-			}
-
-			l.Append(ds.NewListNode(v, nil))
-		}
-		return l
-	}
-
 	newNode := func(value int) *ds.ListNode {
 		return ds.NewListNode(value, nil)
 	}
@@ -30,10 +17,23 @@ func TestList(t *testing.T) {
 		return ds.NewListNode(value, next)
 	}
 
+	fromArray := func(values []int) *ds.ListNode {
+		var l *ds.ListNode
+		for i, v := range values {
+			if i == 0 {
+				l = ds.NewListNode(v, nil)
+				continue
+			}
+
+			l = ds.AppendToList(l, newNode(v))
+		}
+		return l
+	}
+
 	t.Run("appends to the end of the list", func(t *testing.T) {
 		l := newNode(1)
-		l.Append(newNode(2))
-		l.Append(newNode(3))
+		l = ds.AppendToList(l, newNode(2))
+		l = ds.AppendToList(l, newNode(3))
 		require.Equal(t, "1->2->3", l.Display())
 	})
 
@@ -406,6 +406,42 @@ func TestList(t *testing.T) {
 			l := newList(1, newList(2, newList(3, targetPtr)))
 			ds.DeleteListPointer(targetPtr)
 			require.Equal(t, "1->2->3->5->6", l.Display())
+		})
+	})
+
+	t.Run("move evens to the beginning of the list", func(t *testing.T) {
+		t.Run("empty list", func(t *testing.T) {
+			require.Nil(t, ds.MoveListEvensToTheLeft(nil))
+		})
+
+		t.Run("don't change the list when all numbers are even", func(t *testing.T) {
+			l := fromArray([]int{2, 4, 6, 8, 10})
+			l = ds.MoveListEvensToTheLeft(l)
+			require.Equal(
+				t,
+				"2->4->6->8->10",
+				l.Display(),
+			)
+		})
+
+		t.Run("don't change the list when all numbers are odd", func(t *testing.T) {
+			l := fromArray([]int{1, 3, 5, 7, 9})
+			l = ds.MoveListEvensToTheLeft(l)
+			require.Equal(
+				t,
+				"1->3->5->7->9",
+				l.Display(),
+			)
+		})
+
+		t.Run("and keep the same order from evens and odds", func(t *testing.T) {
+			l := fromArray([]int{1, 3, 6, 8, 9, 12})
+			l = ds.MoveListEvensToTheLeft(l)
+			require.Equal(
+				t,
+				"6->8->12->1->3->9",
+				l.Display(),
+			)
 		})
 	})
 }
