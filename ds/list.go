@@ -10,7 +10,7 @@ type ListNode struct {
 	Next  *ListNode
 }
 
-func NewListNode(value int, next *ListNode) *ListNode {
+func NewList(value int, next *ListNode) *ListNode {
 	return &ListNode{Value: value, Next: next}
 }
 
@@ -177,21 +177,21 @@ func (l *ListNode) IsPalindrome() bool {
 		fastPtr = fastPtr.Next.Next
 	} //O(n/2)
 
-	rightHalf := ReverseList(slowPtr.Next) //O(n/2)
+	rightHalf := ListReverse(slowPtr.Next) //O(n/2)
 	slowPtr.Next = nil
 
 	leftPtr := l
 	rightPtr := rightHalf
 	for rightPtr != nil {
 		if leftPtr.Value != rightPtr.Value {
-			slowPtr.Next = ReverseList(rightHalf)
+			slowPtr.Next = ListReverse(rightHalf)
 			return false
 		}
 		leftPtr = leftPtr.Next
 		rightPtr = rightPtr.Next
 	} //O(n/2)
 
-	slowPtr.Next = ReverseList(rightHalf) //O(n/2)
+	slowPtr.Next = ListReverse(rightHalf) //O(n/2)
 	return true
 } //O(4n/2) -> O(2n) -> O(n)
 
@@ -203,9 +203,7 @@ func (l *ListNode) ReverseDisplay() string {
 	return l.Next.ReverseDisplay() + fmt.Sprintf("->%d", l.Value)
 }
 
-// mutating functions
-
-func AppendToList(l *ListNode, newNode *ListNode) *ListNode {
+func ListAppend(l *ListNode, newNode *ListNode) *ListNode {
 	if l == nil {
 		return newNode
 	}
@@ -218,7 +216,7 @@ func AppendToList(l *ListNode, newNode *ListNode) *ListNode {
 	return l
 }
 
-func MoveListEvensToTheLeft(l *ListNode) *ListNode {
+func ListMoveEvensLeft(l *ListNode) *ListNode {
 	if l == nil {
 		return nil
 	}
@@ -230,32 +228,16 @@ func MoveListEvensToTheLeft(l *ListNode) *ListNode {
 		bkp := cursor.Next
 		cursor.Next = nil
 		if cursor.Value%2 == 0 {
-			evenList = AppendToList(evenList, cursor)
+			evenList = ListAppend(evenList, cursor)
 		} else {
-			oddList = AppendToList(oddList, cursor)
+			oddList = ListAppend(oddList, cursor)
 		}
 		cursor = bkp
 	}
-	return AppendToList(evenList, oddList)
+	return ListAppend(evenList, oddList)
 }
 
-func ReverseList(l *ListNode) *ListNode {
-	if l == nil {
-		return nil
-	}
-
-	var newHead *ListNode
-	ptr := l
-	for ptr != nil {
-		bkp := ptr.Next
-		ptr.Next = newHead
-		newHead = ptr
-		ptr = bkp
-	}
-	return newHead
-}
-
-func FindListsMergePoint(l1 *ListNode, l2 *ListNode) *ListNode {
+func ListsFindMergePoint(l1 *ListNode, l2 *ListNode) *ListNode {
 	if l1 == nil || l2 == nil {
 		return nil
 	}
@@ -289,7 +271,7 @@ func FindListsMergePoint(l1 *ListNode, l2 *ListNode) *ListNode {
 	return nil
 } //O(3n) => O(n)
 
-func MergeSortedLists(l1 *ListNode, l2 *ListNode) *ListNode {
+func ListsMergeSorted(l1 *ListNode, l2 *ListNode) *ListNode {
 	// for simplicity, I will assume that both lists are sorted
 
 	if l1 == nil {
@@ -301,15 +283,31 @@ func MergeSortedLists(l1 *ListNode, l2 *ListNode) *ListNode {
 	}
 
 	if l1.Value < l2.Value {
-		l1.Next = MergeSortedLists(l1.Next, l2)
+		l1.Next = ListsMergeSorted(l1.Next, l2)
 		return l1
 	}
 
-	l2.Next = MergeSortedLists(l1, l2.Next)
+	l2.Next = ListsMergeSorted(l1, l2.Next)
 	return l2
 }
 
-func ReverseListInPairs(l *ListNode) *ListNode {
+func ListReverse(l *ListNode) *ListNode {
+	if l == nil {
+		return nil
+	}
+
+	var newHead *ListNode
+	ptr := l
+	for ptr != nil {
+		bkp := ptr.Next
+		ptr.Next = newHead
+		newHead = ptr
+		ptr = bkp
+	}
+	return newHead
+}
+
+func ListReverseInPairs(l *ListNode) *ListNode {
 	if l == nil || l.Next == nil {
 		return l
 	}
@@ -317,12 +315,12 @@ func ReverseListInPairs(l *ListNode) *ListNode {
 	bkp := l.Next.Next
 	newHead := l.Next
 	newHead.Next = l
-	l.Next = ReverseListInPairs(bkp)
+	l.Next = ListReverseInPairs(bkp)
 
 	return newHead
 }
 
-func ReverseListInGroupsOfK(l *ListNode, k int) *ListNode {
+func ListReverseInGroups(l *ListNode, k int) *ListNode {
 	// made a decision to not test validation errors like this one
 	if k < 1 {
 		panic("k must be greater than 0")
@@ -344,11 +342,11 @@ func ReverseListInGroupsOfK(l *ListNode, k int) *ListNode {
 		cursor = bkp
 	}
 
-	l.Next = ReverseListInGroupsOfK(cursor, k)
+	l.Next = ListReverseInGroups(cursor, k)
 	return newHead
 }
 
-func DeleteListPointer(l *ListNode) {
+func ListDeletePointer(l *ListNode) {
 	// made a decision to not test validation errors
 	if l.Next == nil {
 		panic("pointer cannot be at the end of the list")
