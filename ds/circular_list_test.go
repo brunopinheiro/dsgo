@@ -15,7 +15,7 @@ func TestCircularList(t *testing.T) {
 
 		l := ds.NewCircularList(values[0])
 		for _, v := range values[1:] {
-			l.Append(v)
+			l = ds.AppendToCircularList(l, v)
 		}
 		return l
 	}
@@ -25,14 +25,14 @@ func TestCircularList(t *testing.T) {
 		require.Equal(t, "1", l.Display())
 	})
 
-	t.Run("append", func(t *testing.T) {
+	t.Run("AppendToCircularList", func(t *testing.T) {
 		l := ds.NewCircularList(1)
-		l.Append(2)
-		l.Append(3)
+		l = ds.AppendToCircularList(l, 2)
+		l = ds.AppendToCircularList(l, 3)
 		require.Equal(t, "1->2->3", l.Display())
 	})
 
-	t.Run("split circular list into two", func(t *testing.T) {
+	t.Run("SplitCircularListInHalf", func(t *testing.T) {
 		t.Run("with empty list", func(t *testing.T) {
 			left, right := ds.SplitCircularListInHalf(nil)
 			require.Nil(t, left)
@@ -61,12 +61,12 @@ func TestCircularList(t *testing.T) {
 		})
 	})
 
-	t.Run("josephus circle", func(t *testing.T) {
+	t.Run("JosephusCircle", func(t *testing.T) {
 		t.Run("with a single element list", func(t *testing.T) {
 			require.Equal(
 				t,
 				2,
-				fromArray([]int{2}).JosephusCircle(1),
+				ds.JosephusCircle(fromArray([]int{2}), 1),
 			)
 		})
 
@@ -74,7 +74,7 @@ func TestCircularList(t *testing.T) {
 			require.Equal(
 				t,
 				7,
-				fromArray([]int{1, 2, 3, 4, 5, 6, 7}).JosephusCircle(1),
+				ds.JosephusCircle(fromArray([]int{1, 2, 3, 4, 5, 6, 7}), 1),
 			)
 		})
 
@@ -82,7 +82,7 @@ func TestCircularList(t *testing.T) {
 			require.Equal(
 				t,
 				4,
-				fromArray([]int{1, 2, 3, 4, 5, 6, 7}).JosephusCircle(3),
+				ds.JosephusCircle(fromArray([]int{1, 2, 3, 4, 5, 6, 7}), 3),
 			)
 		})
 	})
