@@ -5,16 +5,16 @@ import (
 	"strings"
 )
 
-type ListNode struct {
+type List struct {
 	Value int
-	Next  *ListNode
+	Next  *List
 }
 
-func NewList(value int, next *ListNode) *ListNode {
-	return &ListNode{Value: value, Next: next}
+func NewList(value int, next *List) *List {
+	return &List{Value: value, Next: next}
 }
 
-func (l *ListNode) Length() int {
+func (l *List) Length() int {
 	length := 1
 	cursor := l
 	for cursor != nil {
@@ -24,7 +24,7 @@ func (l *ListNode) Length() int {
 	return length
 }
 
-func (l *ListNode) Display() string {
+func (l *List) Display() string {
 	values := []string{}
 	cursor := l
 	for cursor != nil {
@@ -34,7 +34,7 @@ func (l *ListNode) Display() string {
 	return strings.Join(values, "->")
 }
 
-func (l *ListNode) HasEvenLength() bool {
+func (l *List) HasEvenLength() bool {
 	cursor := l
 	for cursor != nil && cursor.Next != nil {
 		cursor = cursor.Next.Next
@@ -42,7 +42,7 @@ func (l *ListNode) HasEvenLength() bool {
 	return cursor == nil
 }
 
-func (l *ListNode) KthElementFromEnd(k uint) (int, bool) {
+func (l *List) KthElementFromEnd(k uint) (int, bool) {
 	firstPtr := l
 	kthPtr := l
 
@@ -65,7 +65,7 @@ func (l *ListNode) KthElementFromEnd(k uint) (int, bool) {
 	return kthPtr.Value, true
 }
 
-func (l *ListNode) HasLoop() bool {
+func (l *List) HasLoop() bool {
 	slowPtr := l
 	fastPtr := l
 
@@ -102,7 +102,7 @@ Why does it work? (for lists with loop)
   - slow pointer will be at position 0
   - fast pointer will be at position (L - n) + n => L <=> 0
 */
-func (l *ListNode) LoopStart() *ListNode {
+func (l *List) LoopStart() *List {
 	slowPtr := l
 	fastPtr := l
 	hasLoop := false
@@ -129,7 +129,7 @@ func (l *ListNode) LoopStart() *ListNode {
 	return slowPtr
 }
 
-func (l *ListNode) LoopLength() int {
+func (l *List) LoopLength() int {
 	slowPtr := l
 	fastPtr := l
 	hasLoop := false
@@ -155,7 +155,7 @@ func (l *ListNode) LoopLength() int {
 	return length
 }
 
-func (l *ListNode) Middle() int {
+func (l *List) Middle() int {
 	slowPtr := l
 	fastPtr := l
 	for fastPtr != nil && fastPtr.Next != nil {
@@ -165,7 +165,7 @@ func (l *ListNode) Middle() int {
 	return slowPtr.Value
 }
 
-func (l *ListNode) IsPalindrome() bool {
+func (l *List) IsPalindrome() bool {
 	if l.Next == nil {
 		return true
 	}
@@ -195,7 +195,7 @@ func (l *ListNode) IsPalindrome() bool {
 	return true
 } //O(4n/2) -> O(2n) -> O(n)
 
-func (l *ListNode) ReverseDisplay() string {
+func (l *List) ReverseDisplay() string {
 	if l.Next == nil {
 		return fmt.Sprintf("%d", l.Value)
 	}
@@ -203,26 +203,26 @@ func (l *ListNode) ReverseDisplay() string {
 	return l.Next.ReverseDisplay() + fmt.Sprintf("->%d", l.Value)
 }
 
-func ListAppend(l *ListNode, newNode *ListNode) *ListNode {
+func ListAppend(l *List, r *List) *List {
 	if l == nil {
-		return newNode
+		return r
 	}
 
 	cursor := l
 	for cursor.Next != nil {
 		cursor = cursor.Next
 	}
-	cursor.Next = newNode
+	cursor.Next = r
 	return l
 }
 
-func ListMoveEvensLeft(l *ListNode) *ListNode {
+func ListMoveEvensLeft(l *List) *List {
 	if l == nil {
 		return nil
 	}
 
-	var evenList *ListNode
-	var oddList *ListNode
+	var evenList *List
+	var oddList *List
 	cursor := l
 	for cursor != nil {
 		bkp := cursor.Next
@@ -237,7 +237,7 @@ func ListMoveEvensLeft(l *ListNode) *ListNode {
 	return ListAppend(evenList, oddList)
 }
 
-func ListsFindMergePoint(l1 *ListNode, l2 *ListNode) *ListNode {
+func ListsFindMergePoint(l1 *List, l2 *List) *List {
 	if l1 == nil || l2 == nil {
 		return nil
 	}
@@ -271,7 +271,7 @@ func ListsFindMergePoint(l1 *ListNode, l2 *ListNode) *ListNode {
 	return nil
 } //O(3n) => O(n)
 
-func ListsMergeSorted(l1 *ListNode, l2 *ListNode) *ListNode {
+func ListsMergeSorted(l1 *List, l2 *List) *List {
 	// for simplicity, I will assume that both lists are sorted
 
 	if l1 == nil {
@@ -291,12 +291,12 @@ func ListsMergeSorted(l1 *ListNode, l2 *ListNode) *ListNode {
 	return l2
 }
 
-func ListReverse(l *ListNode) *ListNode {
+func ListReverse(l *List) *List {
 	if l == nil {
 		return nil
 	}
 
-	var newHead *ListNode
+	var newHead *List
 	ptr := l
 	for ptr != nil {
 		bkp := ptr.Next
@@ -307,7 +307,7 @@ func ListReverse(l *ListNode) *ListNode {
 	return newHead
 }
 
-func ListReverseInPairs(l *ListNode) *ListNode {
+func ListReverseInPairs(l *List) *List {
 	if l == nil || l.Next == nil {
 		return l
 	}
@@ -320,7 +320,7 @@ func ListReverseInPairs(l *ListNode) *ListNode {
 	return newHead
 }
 
-func ListReverseInGroups(l *ListNode, k int) *ListNode {
+func ListReverseInGroups(l *List, k int) *List {
 	// made a decision to not test validation errors like this one
 	if k < 1 {
 		panic("k must be greater than 0")
@@ -346,7 +346,7 @@ func ListReverseInGroups(l *ListNode, k int) *ListNode {
 	return newHead
 }
 
-func ListDeletePointer(l *ListNode) {
+func ListDeletePointer(l *List) {
 	// made a decision to not test validation errors
 	if l.Next == nil {
 		panic("pointer cannot be at the end of the list")

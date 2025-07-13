@@ -9,23 +9,19 @@ import (
 )
 
 func TestList(t *testing.T) {
-	newNode := func(value int) *ds.ListNode {
-		return ds.NewList(value, nil)
-	}
-
-	newList := func(value int, next *ds.ListNode) *ds.ListNode {
+	newList := func(value int, next *ds.List) *ds.List {
 		return ds.NewList(value, next)
 	}
 
-	fromArray := func(values []int) *ds.ListNode {
-		var l *ds.ListNode
+	fromArray := func(values []int) *ds.List {
+		var l *ds.List
 		for i, v := range values {
 			if i == 0 {
 				l = ds.NewList(v, nil)
 				continue
 			}
 
-			l = ds.ListAppend(l, newNode(v))
+			l = ds.ListAppend(l, newList(v, nil))
 		}
 		return l
 	}
@@ -66,7 +62,7 @@ func TestList(t *testing.T) {
 		})
 
 		t.Run("true when list has a loop", func(t *testing.T) {
-			loopPtr := newNode(3)
+			loopPtr := newList(3, nil)
 			endPtr := newList(5, loopPtr)
 			loopPtr.Next = newList(4, endPtr)
 			l := newList(1, newList(2, loopPtr))
@@ -74,7 +70,7 @@ func TestList(t *testing.T) {
 		})
 
 		t.Run("single node loop", func(t *testing.T) {
-			loopPtr := newNode(3)
+			loopPtr := newList(3, nil)
 			loopPtr.Next = loopPtr
 			require.True(t, loopPtr.HasLoop())
 		})
@@ -87,7 +83,7 @@ func TestList(t *testing.T) {
 		})
 
 		t.Run("the correct pointer for loops with length 1", func(t *testing.T) {
-			loopPtr := newNode(3)
+			loopPtr := newList(3, nil)
 			loopPtr.Next = loopPtr
 			require.Equal(t, loopPtr, loopPtr.LoopStart())
 
@@ -95,7 +91,7 @@ func TestList(t *testing.T) {
 		})
 
 		t.Run("the correct pointer for loops with length > 1", func(t *testing.T) {
-			loopPtr := newNode(3)
+			loopPtr := newList(3, nil)
 			endPtr := newList(5, loopPtr)
 			loopPtr.Next = newList(4, endPtr)
 			l := newList(1, newList(2, loopPtr))
@@ -111,7 +107,7 @@ func TestList(t *testing.T) {
 		})
 
 		t.Run("returns 1 when the list has a single node loop", func(t *testing.T) {
-			loopPtr := newNode(3)
+			loopPtr := newList(3, nil)
 			loopPtr.Next = loopPtr
 			require.Equal(t, 1, loopPtr.LoopLength())
 
@@ -119,7 +115,7 @@ func TestList(t *testing.T) {
 		})
 
 		t.Run("the correct length for loops with length > 1", func(t *testing.T) {
-			loopPtr := newNode(3)
+			loopPtr := newList(3, nil)
 			endPtr := newList(5, loopPtr)
 			loopPtr.Next = newList(4, endPtr)
 			l := newList(1, newList(2, loopPtr))
@@ -140,9 +136,9 @@ func TestList(t *testing.T) {
 
 	t.Run("l.IsPalindrome", func(t *testing.T) {
 		t.Run("returns the correct response", func(t *testing.T) {
-			require.True(t, newNode(1).IsPalindrome())
-			require.False(t, newList(1, newNode(2)).IsPalindrome())
-			require.True(t, newList(1, newNode(1)).IsPalindrome())
+			require.True(t, newList(1, nil).IsPalindrome())
+			require.False(t, newList(1, newList(2, nil)).IsPalindrome())
+			require.True(t, newList(1, newList(1, nil)).IsPalindrome())
 			require.True(t, fromArray([]int{1, 2, 3, 3, 2, 1}).IsPalindrome())
 			require.False(t, fromArray([]int{1, 2, 4, 3, 2, 1}).IsPalindrome())
 			require.True(t, fromArray([]int{1, 2, 3, 4, 3, 2, 1}).IsPalindrome())
@@ -169,9 +165,9 @@ func TestList(t *testing.T) {
 	})
 
 	t.Run("ListAppend", func(t *testing.T) {
-		l := newNode(1)
-		l = ds.ListAppend(l, newNode(2))
-		l = ds.ListAppend(l, newNode(3))
+		l := newList(1, nil)
+		l = ds.ListAppend(l, newList(2, nil))
+		l = ds.ListAppend(l, newList(3, nil))
 		require.Equal(t, "1->2->3", l.Display())
 	})
 
@@ -335,7 +331,7 @@ func TestList(t *testing.T) {
 		})
 
 		t.Run("single node list", func(t *testing.T) {
-			require.Equal(t, fromArray([]int{1}), ds.ListReverse(newNode(1)))
+			require.Equal(t, fromArray([]int{1}), ds.ListReverse(newList(1, nil)))
 		})
 
 		t.Run("multiple node list", func(t *testing.T) {
@@ -353,7 +349,7 @@ func TestList(t *testing.T) {
 		t.Run("with a single element", func(t *testing.T) {
 			require.Equal(
 				t,
-				ds.ListReverseInPairs(newNode(1)).Display(),
+				ds.ListReverseInPairs(newList(1, nil)).Display(),
 				"1",
 			)
 		})
@@ -386,8 +382,8 @@ func TestList(t *testing.T) {
 		})
 
 		t.Run("with a list of a single element", func(t *testing.T) {
-			actual := ds.ListReverseInGroups(newNode(1), 1)
-			require.Equal(t, newNode(1), actual)
+			actual := ds.ListReverseInGroups(newList(1, nil), 1)
+			require.Equal(t, newList(1, nil), actual)
 		})
 
 		t.Run("does not change the list when K is 1", func(t *testing.T) {
@@ -438,7 +434,7 @@ func TestList(t *testing.T) {
 
 	t.Run("ListDeletePointer", func(t *testing.T) {
 		t.Run("when pointer is the tail of the list", func(t *testing.T) {
-			targetPtr := newList(4, newList(5, newNode(6)))
+			targetPtr := newList(4, newList(5, newList(6, nil)))
 			l := newList(1, newList(2, newList(3, targetPtr)))
 			ds.ListDeletePointer(targetPtr)
 			require.Equal(t, "1->2->3->5->6", l.Display())

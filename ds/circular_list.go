@@ -5,18 +5,18 @@ import (
 	"strings"
 )
 
-type CircularListNode struct {
+type CircularList struct {
 	Value int
-	Next  *CircularListNode
+	Next  *CircularList
 }
 
-func NewCircularList(value int) *CircularListNode {
-	l := &CircularListNode{Value: value, Next: nil}
+func NewCircularList(value int) *CircularList {
+	l := &CircularList{Value: value, Next: nil}
 	l.Next = l
 	return l
 }
 
-func (l *CircularListNode) Display() string {
+func (l *CircularList) Display() string {
 	values := []string{
 		fmt.Sprintf("%d", l.Value),
 	}
@@ -28,17 +28,17 @@ func (l *CircularListNode) Display() string {
 	return strings.Join(values, "->")
 }
 
-func AppendToCircularList(l *CircularListNode, value int) *CircularListNode {
+func CircularListAppend(l *CircularList, value int) *CircularList {
 	cursor := l
 	for cursor.Next != l {
 		cursor = cursor.Next
 	}
 
-	cursor.Next = &CircularListNode{Value: value, Next: l}
+	cursor.Next = &CircularList{Value: value, Next: l}
 	return l
 }
 
-func SplitCircularListInHalf(l *CircularListNode) (*CircularListNode, *CircularListNode) {
+func CircularListSplitInHalf(l *CircularList) (*CircularList, *CircularList) {
 	if l == nil {
 		return nil, nil
 	}
@@ -66,7 +66,7 @@ func SplitCircularListInHalf(l *CircularListNode) (*CircularListNode, *CircularL
 	return l, right
 }
 
-func JosephusCircle(l *CircularListNode, k int) int {
+func CircularListJosephusCircle(l *CircularList, k int) int {
 	if l == nil {
 		panic("list cannot be empty")
 	}
