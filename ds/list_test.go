@@ -500,4 +500,26 @@ func TestList(t *testing.T) {
 			)
 		})
 	})
+
+	t.Run("RemoveDuplicates", func(t *testing.T) {
+		t.Run("empty list", func(t *testing.T) {
+			require.Nil(t, ds.RemoveDuplicates(nil))
+		})
+
+		t.Run("when there are no duplicates", func(t *testing.T) {
+			require.Equal(
+				t,
+				"1->2->3->4->5",
+				ds.RemoveDuplicates(fromArray([]int{1, 2, 3, 4, 5})).Display(),
+			)
+		})
+
+		t.Run("keep at least one copy of the duplicated values", func(t *testing.T) {
+			require.Equal(
+				t,
+				"1->2->3->4->5",
+				ds.RemoveDuplicates(fromArray([]int{1, 1, 2, 3, 3, 3, 4, 5, 5})).Display(),
+			)
+		})
+	})
 }

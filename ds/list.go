@@ -406,3 +406,22 @@ func PartitionList(l *List, k int) *List {
 	}
 	return ListAppend(smallerList, greaterList)
 }
+
+func RemoveDuplicates(l *List) *List {
+	if l == nil {
+		return nil
+	}
+
+	prev := l
+	cursor := l.Next
+	for cursor != nil {
+		if prev.Value == cursor.Value {
+			prev.Next = cursor.Next
+		} else {
+			prev = prev.Next
+		}
+		cursor = cursor.Next
+	}
+
+	return l
+}
