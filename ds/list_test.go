@@ -433,11 +433,41 @@ func TestList(t *testing.T) {
 	})
 
 	t.Run("ListDeletePointer", func(t *testing.T) {
-		t.Run("when pointer is the tail of the list", func(t *testing.T) {
+		t.Run("when pointer is not the tail of the list", func(t *testing.T) {
 			targetPtr := newList(4, newList(5, newList(6, nil)))
 			l := newList(1, newList(2, newList(3, targetPtr)))
 			ds.ListDeletePointer(targetPtr)
 			require.Equal(t, "1->2->3->5->6", l.Display())
+		})
+	})
+
+	t.Run("SplitAndReverseMerge", func(t *testing.T) {
+		t.Run("empty list", func(t *testing.T) {
+			require.Nil(t, ds.SplitAndReverseMerge(nil))
+		})
+
+		t.Run("single element list", func(t *testing.T) {
+			require.Equal(t, "1", ds.SplitAndReverseMerge(newList(1, nil)).Display())
+		})
+
+		t.Run("two elements list", func(t *testing.T) {
+			require.Equal(t, "1->2", ds.SplitAndReverseMerge(fromArray([]int{1, 2})).Display())
+		})
+
+		t.Run("with even number of elements", func(t *testing.T) {
+			require.Equal(
+				t,
+				"1->6->2->5->3->4",
+				ds.SplitAndReverseMerge(fromArray([]int{1, 2, 3, 4, 5, 6})).Display(),
+			)
+		})
+
+		t.Run("with odd number of elements", func(t *testing.T) {
+			require.Equal(
+				t,
+				"1->7->2->6->3->5->4",
+				ds.SplitAndReverseMerge(fromArray([]int{1, 2, 3, 4, 5, 6, 7})).Display(),
+			)
 		})
 	})
 }

@@ -355,3 +355,33 @@ func ListDeletePointer(l *List) {
 	l.Value = l.Next.Value
 	l.Next = l.Next.Next
 }
+
+func SplitAndReverseMerge(l *List) *List {
+	if l == nil || l.Next == nil {
+		return l
+	}
+
+	slowPtr := l
+	fastPtr := l.Next
+	for fastPtr != nil && fastPtr.Next != nil {
+		slowPtr = slowPtr.Next
+		fastPtr = fastPtr.Next.Next
+	}
+
+	rightHalf := ListReverse(slowPtr.Next)
+	slowPtr.Next = nil
+
+	cursor := l
+	for cursor != nil && rightHalf != nil {
+		nextLeft := cursor.Next
+		nextRight := rightHalf.Next
+
+		cursor.Next = rightHalf
+		rightHalf.Next = nextLeft
+
+		rightHalf = nextRight
+		cursor = nextLeft
+	}
+
+	return l
+}
