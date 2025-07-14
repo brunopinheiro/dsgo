@@ -470,4 +470,34 @@ func TestList(t *testing.T) {
 			)
 		})
 	})
+
+	t.Run("PartitionList", func(t *testing.T) {
+		t.Run("empty list", func(t *testing.T) {
+			require.Nil(t, ds.PartitionList(nil, 1))
+		})
+
+		t.Run("when all elements are smaller than given value", func(t *testing.T) {
+			require.Equal(
+				t,
+				"3->1->4->2",
+				ds.PartitionList(fromArray([]int{3, 1, 4, 2}), 5).Display(),
+			)
+		})
+
+		t.Run("when all elements are greater than or equal than given value", func(t *testing.T) {
+			require.Equal(
+				t,
+				"7->9->5->6->8",
+				ds.PartitionList(fromArray([]int{7, 9, 5, 6, 8}), 5).Display(),
+			)
+		})
+
+		t.Run("with mixed elements", func(t *testing.T) {
+			require.Equal(
+				t,
+				"3->1->4->2->7->9->5->6",
+				ds.PartitionList(fromArray([]int{7, 9, 3, 1, 5, 4, 2, 6}), 5).Display(),
+			)
+		})
+	})
 }

@@ -385,3 +385,24 @@ func SplitAndReverseMerge(l *List) *List {
 
 	return l
 }
+
+func PartitionList(l *List, k int) *List {
+	if l == nil {
+		return nil
+	}
+
+	var smallerList *List
+	var greaterList *List
+	cursor := l
+	for cursor != nil {
+		bkp := cursor.Next
+		cursor.Next = nil
+		if cursor.Value < k {
+			smallerList = ListAppend(smallerList, cursor)
+		} else {
+			greaterList = ListAppend(greaterList, cursor)
+		}
+		cursor = bkp
+	}
+	return ListAppend(smallerList, greaterList)
+}
