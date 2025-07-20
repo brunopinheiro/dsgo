@@ -41,6 +41,31 @@ func StackPop(s *Stack) (*Stack, int) {
 	return s.next, s.value
 }
 
+func StackReverse(s *Stack) *Stack {
+	// Time Complexity: O(n) | Space Complexity: O(n)
+	// we could get space complexity O(1) by only reverting the direction of pointers
+	// but the challenge was to only use push and pop
+
+	// not using push and pop, but another idea on how to solve the problem
+	// if we implemented the stack with a dynamic array,
+	// we could have two pointers: leftPtr and a rightPtr
+	// leftPtr starts at 0
+	// rightPtr starts at len(array) - 1
+	// leftPtr moves from left to right
+	// rightPtr moves from right to left
+	// swap the values from leftPtr and rightPtr and move them until rightPtr >= leftPtr
+	// Time Complexity: O(n/2) => O(n) | Space Complexity: O(1)
+
+	var newStack *Stack
+	var poppedValue int
+	for s != nil {
+		s, poppedValue = StackPop(s)
+		newStack = StackPush(newStack, poppedValue)
+	}
+
+	return newStack
+}
+
 // this functions is not related to the Stack structure.
 // why keep it here?
 // implemented this function as a challenge from Stacks section

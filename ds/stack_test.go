@@ -30,6 +30,24 @@ func TestStack(t *testing.T) {
 		require.Equal(t, "3->2->1", s.Display())
 	})
 
+	t.Run("StackReverse", func(t *testing.T) {
+		t.Run("empty stack", func(t *testing.T) {
+			require.Nil(t, ds.StackReverse(nil))
+		})
+
+		t.Run("stack with single element", func(t *testing.T) {
+			require.Equal(t, "1", ds.StackReverse(ds.NewStack(1)).Display())
+		})
+
+		t.Run("reverses the stack with multiple elements", func(t *testing.T) {
+			require.Equal(
+				t,
+				"1->2->3->4->5",
+				ds.StackReverse(fromArray([]int{1, 2, 3, 4, 5})).Display(),
+			)
+		})
+	})
+
 	t.Run("IsArrayPalindrome", func(t *testing.T) {
 		// function will receive an array of integers
 		// 0 will indicate the middle of the array
