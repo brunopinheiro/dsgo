@@ -37,3 +37,19 @@ func (q *Queue) Display() string {
 	}
 	return strings.Join(rawValues, "->")
 }
+
+func (q *Queue) Reverse() {
+	if len(q.values) == 0 {
+		return
+	}
+
+	leftPtr := 0
+	rightPtr := len(q.values) - 1
+	for rightPtr > leftPtr {
+		q.values[leftPtr] = q.values[leftPtr] ^ q.values[rightPtr]
+		q.values[rightPtr] = q.values[leftPtr] ^ q.values[rightPtr]
+		q.values[leftPtr] = q.values[leftPtr] ^ q.values[rightPtr]
+		leftPtr += 1
+		rightPtr -= 1
+	}
+}

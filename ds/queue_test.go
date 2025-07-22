@@ -34,4 +34,10 @@ func TestQueue(t *testing.T) {
 
 		require.Equal(t, "3->4->5", q.Display())
 	})
+
+	t.Run("reverse", func(t *testing.T) {
+		q := fromArray([]int{1, 2, 3, 4, 5})
+		q.Reverse()
+		require.Equal(t, "5->4->3->2->1", q.Display())
+	})
 }
