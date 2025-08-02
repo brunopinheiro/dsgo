@@ -62,4 +62,31 @@ func TestQueue(t *testing.T) {
 			require.Equal(t, "1->4->2->5->3->6", ds.QueueMergeHalfs(q).Display())
 		})
 	})
+
+	t.Run("check sequence in pairs", func(t *testing.T) {
+		t.Run("empty queue", func(t *testing.T) {
+			require.True(t, ds.QueueCheckSequenceInPairs(ds.NewQueue()))
+		})
+
+		t.Run("single element", func(t *testing.T) {
+			q := ds.NewQueue()
+			q.Enqueue(1)
+			require.True(t, ds.QueueCheckSequenceInPairs(q))
+		})
+
+		t.Run("odd number of elements", func(t *testing.T) {
+			q := fromArray([]int{99, -1, -2, 6, 7})
+			require.True(t, ds.QueueCheckSequenceInPairs(q))
+		})
+
+		t.Run("even number of elements", func(t *testing.T) {
+			q := fromArray([]int{99, 98, -1, -2, 6, 7})
+			require.True(t, ds.QueueCheckSequenceInPairs(q))
+		})
+
+		t.Run("when a pair is not in sequence", func(t *testing.T) {
+			q := fromArray([]int{99, 98, -1, -2, 15, 17, 6, 7})
+			require.False(t, ds.QueueCheckSequenceInPairs(q))
+		})
+	})
 }

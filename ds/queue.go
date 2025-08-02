@@ -2,6 +2,7 @@ package ds
 
 import (
 	"fmt"
+	"math"
 	"strings"
 )
 
@@ -71,4 +72,29 @@ func QueueMergeHalfs(q *Queue) *List {
 		}
 	}
 	return l
+}
+
+func QueueCheckSequenceInPairs(q *Queue) bool {
+	if q.Size() <= 1 {
+		return true
+	}
+
+	var s *Stack
+	for q.Size() > 0 {
+		s = StackPush(s, q.Dequeue())
+	}
+
+	var firstValue int
+	var secondValue int
+	for s != nil {
+		s, firstValue = StackPop(s)
+		if s != nil {
+			s, secondValue = StackPop(s)
+			if math.Abs(float64(firstValue-secondValue)) != 1 {
+				return false
+			}
+		}
+	}
+
+	return true
 }
