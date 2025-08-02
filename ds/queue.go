@@ -17,6 +17,10 @@ func NewQueue() *Queue {
 	return &Queue{values: []int{}}
 }
 
+func (q *Queue) Size() int {
+	return len(q.values)
+}
+
 func (q *Queue) Enqueue(value int) {
 	q.values = append(q.values, value)
 }
