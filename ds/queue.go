@@ -57,3 +57,18 @@ func (q *Queue) Reverse() {
 		rightPtr -= 1
 	}
 }
+
+func QueueMergeHalfs(q *Queue) *List {
+	var l *List
+	rightHalfQueue := NewQueue()
+	for range (q.Size() + 1) / 2 {
+		rightHalfQueue.Enqueue(q.Dequeue())
+	}
+	for range rightHalfQueue.Size() {
+		l = ListAppend(l, NewList(rightHalfQueue.Dequeue(), nil))
+		if q.Size() > 0 {
+			l = ListAppend(l, NewList(q.Dequeue(), nil))
+		}
+	}
+	return l
+}

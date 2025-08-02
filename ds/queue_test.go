@@ -40,4 +40,26 @@ func TestQueue(t *testing.T) {
 		q.Reverse()
 		require.Equal(t, "5->4->3->2->1", q.Display())
 	})
+
+	t.Run("merge halfs", func(t *testing.T) {
+		t.Run("empty queue", func(t *testing.T) {
+			require.Nil(t, ds.QueueMergeHalfs(ds.NewQueue()))
+		})
+
+		t.Run("single element", func(t *testing.T) {
+			q := ds.NewQueue()
+			q.Enqueue(1)
+			require.Equal(t, "1", ds.QueueMergeHalfs(q).Display())
+		})
+
+		t.Run("odd number of elements", func(t *testing.T) {
+			q := fromArray([]int{1, 2, 3, 4, 5})
+			require.Equal(t, "1->4->2->5->3", ds.QueueMergeHalfs(q).Display())
+		})
+
+		t.Run("even number of elements", func(t *testing.T) {
+			q := fromArray([]int{1, 2, 3, 4, 5, 6})
+			require.Equal(t, "1->4->2->5->3->6", ds.QueueMergeHalfs(q).Display())
+		})
+	})
 }
