@@ -89,4 +89,31 @@ func TestQueue(t *testing.T) {
 			require.False(t, ds.QueueCheckSequenceInPairs(q))
 		})
 	})
+
+	t.Run("reverse k elements", func(t *testing.T) {
+		t.Run("empty queue", func(t *testing.T) {
+			q := ds.NewQueue()
+			q.ReverseKElements(1)
+			require.Equal(t, "", q.Display())
+		})
+
+		t.Run("single element", func(t *testing.T) {
+			q := ds.NewQueue()
+			q.Enqueue(1)
+			q.ReverseKElements(1)
+			require.Equal(t, "1", q.Display())
+		})
+
+		t.Run("when k is greater than queue size", func(t *testing.T) {
+			q := fromArray([]int{1, 2, 3, 4, 5})
+			q.ReverseKElements(6)
+			require.Equal(t, "5->4->3->2->1", q.Display())
+		})
+
+		t.Run("when k is less than queue size", func(t *testing.T) {
+			q := fromArray([]int{1, 2, 3, 4, 5})
+			q.ReverseKElements(3)
+			require.Equal(t, "3->2->1->4->5", q.Display())
+		})
+	})
 }

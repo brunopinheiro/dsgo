@@ -59,6 +59,34 @@ func (q *Queue) Reverse() {
 	}
 }
 
+func (q *Queue) ReverseKElements(k uint) {
+	if len(q.values) == 0 {
+		return
+	}
+
+	var s *Stack
+	i := uint(0)
+	for q.Size() > 0 && i < k {
+		s = StackPush(s, q.Dequeue())
+		i += 1
+	}
+
+	secondHalfQueue := NewQueue()
+	for q.Size() > 0 {
+		secondHalfQueue.Enqueue(q.Dequeue())
+	}
+
+	for s != nil {
+		var v int
+		s, v = StackPop(s)
+		q.Enqueue(v)
+	}
+
+	for secondHalfQueue.Size() > 0 {
+		q.Enqueue(secondHalfQueue.Dequeue())
+	}
+}
+
 func QueueMergeHalfs(q *Queue) *List {
 	var l *List
 	rightHalfQueue := NewQueue()
