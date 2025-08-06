@@ -102,6 +102,7 @@ Why does it work? (for lists with loop)
   - slow pointer will be at position 0
   - fast pointer will be at position (L - n) + n => L <=> 0
 */
+
 func (l *List) LoopStart() *List {
 	slowPtr := l
 	fastPtr := l
