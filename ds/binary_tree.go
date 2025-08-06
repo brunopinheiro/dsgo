@@ -164,3 +164,17 @@ func (t *BinaryTree) Size() int {
 	}
 	return size
 }
+
+func (t *BinaryTree) Height() int {
+	leftHeight := 0
+	if t.left != nil {
+		leftHeight = t.left.Height()
+	}
+
+	rightHeight := 0
+	if t.right != nil {
+		rightHeight = t.right.Height()
+	}
+
+	return 1 + max(leftHeight, rightHeight)
+}

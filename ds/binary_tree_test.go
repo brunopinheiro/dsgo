@@ -180,4 +180,67 @@ func TestBinaryTree(t *testing.T) {
 
 		require.Equal(t, "4 5 6 7 2 3 1", bt.DisplayReverseLevelorder())
 	})
+
+	t.Run("height", func(t *testing.T) {
+		bt := ds.NewBinaryTree(
+			1,
+			ds.NewBinaryTree(
+				2,
+				ds.NewBinaryTree(4, nil, nil),
+				ds.NewBinaryTree(5, nil, nil),
+			),
+			ds.NewBinaryTree(
+				3,
+				ds.NewBinaryTree(6, nil, nil),
+				ds.NewBinaryTree(7, nil, nil),
+			),
+		)
+		require.Equal(t, 3, bt.Height())
+
+		bt = ds.NewBinaryTree(
+			1,
+			ds.NewBinaryTree(
+				2,
+				ds.NewBinaryTree(
+					4,
+					ds.NewBinaryTree(
+						5,
+						ds.NewBinaryTree(6, nil, nil),
+						nil,
+					),
+					nil,
+				),
+				nil,
+			),
+			ds.NewBinaryTree(
+				3,
+				ds.NewBinaryTree(7, nil, nil),
+				nil,
+			),
+		)
+		require.Equal(t, 5, bt.Height())
+
+		bt = ds.NewBinaryTree(
+			1,
+			ds.NewBinaryTree(
+				3,
+				ds.NewBinaryTree(7, nil, nil),
+				nil,
+			),
+			ds.NewBinaryTree(
+				2,
+				ds.NewBinaryTree(
+					4,
+					ds.NewBinaryTree(
+						5,
+						ds.NewBinaryTree(6, nil, nil),
+						nil,
+					),
+					nil,
+				),
+				nil,
+			),
+		)
+		require.Equal(t, 5, bt.Height())
+	})
 }
