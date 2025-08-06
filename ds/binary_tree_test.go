@@ -116,4 +116,68 @@ func TestBinaryTree(t *testing.T) {
 		require.False(t, bt.Contains(9))
 		require.True(t, bt.Contains(3))
 	})
+
+	t.Run("add keeps the tree complete", func(t *testing.T) {
+		bt := ds.NewBinaryTree(1, nil, nil)
+		bt.Add(2)
+		require.Equal(t, "1 2", bt.DisplayLevelorder())
+
+		bt.Add(3)
+		require.Equal(t, "1 2 3", bt.DisplayLevelorder())
+
+		bt.Add(4)
+		require.Equal(t, "1 2 3 4", bt.DisplayLevelorder())
+
+		bt.Add(5)
+		require.Equal(t, "1 2 3 4 5", bt.DisplayLevelorder())
+
+		bt.Add(6)
+		require.Equal(t, "1 2 3 4 5 6", bt.DisplayLevelorder())
+	})
+
+	t.Run("size", func(t *testing.T) {
+		bt := ds.NewBinaryTree(1, nil, nil)
+		require.Equal(t, 1, bt.Size())
+
+		bt = ds.NewBinaryTree(
+			6,
+			ds.NewBinaryTree(
+				7,
+				ds.NewBinaryTree(3, nil, nil),
+				ds.NewBinaryTree(4, nil, nil),
+			),
+			ds.NewBinaryTree(
+				3,
+				ds.NewBinaryTree(5, nil, nil),
+				ds.NewBinaryTree(
+					2,
+					ds.NewBinaryTree(
+						8,
+						nil,
+						ds.NewBinaryTree(9, nil, nil),
+					),
+					nil,
+				),
+			),
+		)
+		require.Equal(t, 9, bt.Size())
+	})
+
+	t.Run("display reverser level order", func(t *testing.T) {
+		bt := ds.NewBinaryTree(
+			1,
+			ds.NewBinaryTree(
+				2,
+				ds.NewBinaryTree(4, nil, nil),
+				ds.NewBinaryTree(5, nil, nil),
+			),
+			ds.NewBinaryTree(
+				3,
+				ds.NewBinaryTree(6, nil, nil),
+				ds.NewBinaryTree(7, nil, nil),
+			),
+		)
+
+		require.Equal(t, "4 5 6 7 2 3 1", bt.DisplayReverseLevelorder())
+	})
 }

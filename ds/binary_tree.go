@@ -13,6 +13,7 @@ func NewBinaryTree(value int, left *BinaryTree, right *BinaryTree) *BinaryTree {
 }
 
 func (t *BinaryTree) DisplayPreorder() string {
+	// without recursion, we could solve this problem using a queue
 	result := fmt.Sprintf("%d", t.value)
 	if t.left != nil {
 		result += " " + t.left.DisplayPreorder()
@@ -26,6 +27,7 @@ func (t *BinaryTree) DisplayPreorder() string {
 }
 
 func (t *BinaryTree) DisplayInorder() string {
+	// without recursion, we could solve this problem using a queue
 	result := ""
 	if t.left != nil {
 		result += t.left.DisplayInorder() + " "
@@ -41,6 +43,7 @@ func (t *BinaryTree) DisplayInorder() string {
 }
 
 func (t *BinaryTree) DisplayPostorder() string {
+	// without recursion, we could solve this problem using a queue
 	result := ""
 	if t.left != nil {
 		result += t.left.DisplayPostorder() + " "
@@ -56,22 +59,52 @@ func (t *BinaryTree) DisplayPostorder() string {
 
 func (t *BinaryTree) DisplayLevelorder() string {
 	result := ""
-	stack := []*BinaryTree{t}
-	for len(stack) > 0 {
+	queue := []*BinaryTree{t}
+	for len(queue) > 0 {
 		if len(result) > 0 {
 			result += " "
 		}
-		node := stack[0]
+		node := queue[0]
 		result += fmt.Sprintf("%d", node.value)
 		if node.left != nil {
-			stack = append(stack, node.left)
+			queue = append(queue, node.left)
 		}
 		if node.right != nil {
+			queue = append(queue, node.right)
+		}
+		if len(queue) > 0 {
+			queue = queue[1:]
+		}
+	}
+	return result
+}
+
+func (t *BinaryTree) DisplayReverseLevelorder() string {
+	queue := []*BinaryTree{t}
+	stack := []*BinaryTree{t}
+	for len(queue) > 0 {
+		node := queue[0]
+		if node.right != nil {
 			stack = append(stack, node.right)
+			queue = append(queue, node.right)
 		}
-		if len(stack) > 0 {
-			stack = stack[1:]
+		if node.left != nil {
+			stack = append(stack, node.left)
+			queue = append(queue, node.left)
 		}
+		if len(queue) > 0 {
+			queue = queue[1:]
+		}
+	}
+
+	result := ""
+	for len(stack) > 0 {
+		top := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		if len(result) > 0 {
+			result += " "
+		}
+		result += fmt.Sprintf("%d", top.value)
 	}
 	return result
 }
@@ -94,5 +127,40 @@ func (t *BinaryTree) Max() int {
 }
 
 func (t *BinaryTree) Contains(value int) bool {
+	// without recursion, we could solve this problem using a queue
 	return t.value == value || (t.left != nil && t.left.Contains(value)) || (t.right != nil && t.right.Contains(value))
+}
+
+func (t *BinaryTree) Add(value int) {
+	queue := []*BinaryTree{t}
+	for {
+		node := queue[0]
+		queue = queue[1:]
+		if node.left == nil && node.right == nil {
+			node.left = NewBinaryTree(value, nil, nil)
+			break
+		}
+		if node.left != nil {
+			if node.right == nil {
+				node.right = NewBinaryTree(value, nil, nil)
+				break
+			}
+			queue = append(queue, node.left)
+		}
+		if node.right != nil {
+			queue = append(queue, node.right)
+		}
+	}
+}
+
+func (t *BinaryTree) Size() int {
+	// without recursion, we could solve this problem using a queue
+	size := 1
+	if t.left != nil {
+		size += t.left.Size()
+	}
+	if t.right != nil {
+		size += t.right.Size()
+	}
+	return size
 }
