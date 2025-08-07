@@ -243,4 +243,90 @@ func TestBinaryTree(t *testing.T) {
 		)
 		require.Equal(t, 5, bt.Height())
 	})
+
+	t.Run("deepest value", func(t *testing.T) {
+		t.Run("when tree is full", func(t *testing.T) {
+			bt := ds.NewBinaryTree(
+				1,
+				ds.NewBinaryTree(
+					2,
+					ds.NewBinaryTree(4, nil, nil),
+					ds.NewBinaryTree(5, nil, nil),
+				),
+				ds.NewBinaryTree(
+					3,
+					ds.NewBinaryTree(6, nil, nil),
+					ds.NewBinaryTree(7, nil, nil),
+				),
+			)
+			require.Equal(t, 7, bt.DeepestValue())
+		})
+
+		t.Run("when tree is complete", func(t *testing.T) {
+			bt := ds.NewBinaryTree(
+				1,
+				ds.NewBinaryTree(
+					2,
+					ds.NewBinaryTree(4, nil, nil),
+					ds.NewBinaryTree(5, nil, nil),
+				),
+				ds.NewBinaryTree(
+					3,
+					ds.NewBinaryTree(6, nil, nil),
+					nil,
+				),
+			)
+			require.Equal(t, 6, bt.DeepestValue())
+		})
+
+		t.Run("when tree is unbalanced with left having deepest value", func(t *testing.T) {
+			bt := ds.NewBinaryTree(
+				1,
+				ds.NewBinaryTree(
+					2,
+					ds.NewBinaryTree(4, nil, nil),
+					ds.NewBinaryTree(
+						5,
+						ds.NewBinaryTree(
+							7,
+							nil,
+							ds.NewBinaryTree(8, nil, nil),
+						),
+						nil,
+					),
+				),
+				ds.NewBinaryTree(
+					3,
+					ds.NewBinaryTree(6, nil, nil),
+					nil,
+				),
+			)
+			require.Equal(t, 8, bt.DeepestValue())
+		})
+
+		t.Run("when tree is unbalanced with right having deepest value", func(t *testing.T) {
+			bt := ds.NewBinaryTree(
+				1,
+				ds.NewBinaryTree(
+					3,
+					ds.NewBinaryTree(6, nil, nil),
+					nil,
+				),
+				ds.NewBinaryTree(
+					2,
+					ds.NewBinaryTree(4, nil, nil),
+					ds.NewBinaryTree(
+						5,
+						ds.NewBinaryTree(
+							7,
+							ds.NewBinaryTree(8, nil, nil),
+							nil,
+						),
+						nil,
+					),
+				),
+			)
+			require.Equal(t, 8, bt.DeepestValue())
+		})
+	})
 }

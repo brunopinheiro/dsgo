@@ -178,3 +178,19 @@ func (t *BinaryTree) Height() int {
 
 	return 1 + max(leftHeight, rightHeight)
 }
+
+func (t *BinaryTree) DeepestValue() int {
+	queue := []*BinaryTree{t}
+	deepestNode := t
+	for len(queue) > 0 {
+		deepestNode = queue[0]
+		queue = queue[1:]
+		if deepestNode.left != nil {
+			queue = append(queue, deepestNode.left)
+		}
+		if deepestNode.right != nil {
+			queue = append(queue, deepestNode.right)
+		}
+	}
+	return deepestNode.value
+}
