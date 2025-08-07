@@ -329,4 +329,29 @@ func TestBinaryTree(t *testing.T) {
 			require.Equal(t, 8, bt.DeepestValue())
 		})
 	})
+
+	t.Run("count number of leafs", func(t *testing.T) {
+		bt := ds.NewBinaryTree(
+			1,
+			ds.NewBinaryTree(
+				3,
+				ds.NewBinaryTree(6, nil, nil),
+				nil,
+			),
+			ds.NewBinaryTree(
+				2,
+				ds.NewBinaryTree(4, nil, nil),
+				ds.NewBinaryTree(
+					5,
+					ds.NewBinaryTree(
+						7,
+						ds.NewBinaryTree(8, nil, nil),
+						nil,
+					),
+					nil,
+				),
+			),
+		)
+		require.Equal(t, 3, bt.LeafCount())
+	})
 }

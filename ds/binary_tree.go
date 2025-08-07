@@ -194,3 +194,23 @@ func (t *BinaryTree) DeepestValue() int {
 	}
 	return deepestNode.value
 }
+
+func (t *BinaryTree) LeafCount() int {
+	queue := []*BinaryTree{t}
+	leafs := 0
+	for len(queue) > 0 {
+		node := queue[0]
+		queue = queue[1:]
+		if node.left == nil && node.right == nil {
+			leafs += 1
+			continue
+		}
+		if node.left != nil {
+			queue = append(queue, node.left)
+		}
+		if node.right != nil {
+			queue = append(queue, node.right)
+		}
+	}
+	return leafs
+}
