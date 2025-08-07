@@ -214,3 +214,15 @@ func (t *BinaryTree) LeafCount() int {
 	}
 	return leafs
 }
+
+func BinaryTreeEqual(left *BinaryTree, right *BinaryTree) bool {
+	if left == nil && right == nil {
+		return true
+	}
+	if left == nil || right == nil {
+		return false
+	}
+	return left.value == right.value &&
+		BinaryTreeEqual(left.left, right.left) &&
+		BinaryTreeEqual(left.right, right.right)
+}

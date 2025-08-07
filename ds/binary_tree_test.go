@@ -354,4 +354,128 @@ func TestBinaryTree(t *testing.T) {
 		)
 		require.Equal(t, 3, bt.LeafCount())
 	})
+
+	t.Run("equal", func(t *testing.T) {
+		t.Run("true when values and structures are equal", func(t *testing.T) {
+			leftBT := ds.NewBinaryTree(
+				1,
+				ds.NewBinaryTree(
+					3,
+					ds.NewBinaryTree(6, nil, nil),
+					nil,
+				),
+				ds.NewBinaryTree(
+					2,
+					ds.NewBinaryTree(4, nil, nil),
+					ds.NewBinaryTree(
+						5,
+						ds.NewBinaryTree(
+							7,
+							ds.NewBinaryTree(8, nil, nil),
+							nil,
+						),
+						nil,
+					),
+				),
+			)
+
+			rightBT := ds.NewBinaryTree(
+				1,
+				ds.NewBinaryTree(
+					3,
+					ds.NewBinaryTree(6, nil, nil),
+					nil,
+				),
+				ds.NewBinaryTree(
+					2,
+					ds.NewBinaryTree(4, nil, nil),
+					ds.NewBinaryTree(
+						5,
+						ds.NewBinaryTree(
+							7,
+							ds.NewBinaryTree(8, nil, nil),
+							nil,
+						),
+						nil,
+					),
+				),
+			)
+
+			require.True(t, ds.BinaryTreeEqual(leftBT, rightBT))
+
+		})
+
+		t.Run("true when both are nil", func(t *testing.T) {
+			require.True(t, ds.BinaryTreeEqual(nil, nil))
+		})
+
+		t.Run("false when structures are equal but values are different", func(t *testing.T) {
+			leftBT := ds.NewBinaryTree(
+				1,
+				ds.NewBinaryTree(
+					2,
+					ds.NewBinaryTree(3, nil, nil),
+					ds.NewBinaryTree(4, nil, nil),
+				),
+				ds.NewBinaryTree(
+					5,
+					ds.NewBinaryTree(6, nil, nil),
+					ds.NewBinaryTree(7, nil, nil),
+				),
+			)
+
+			rightBT := ds.NewBinaryTree(
+				1,
+				ds.NewBinaryTree(
+					2,
+					ds.NewBinaryTree(99, nil, nil),
+					ds.NewBinaryTree(4, nil, nil),
+				),
+				ds.NewBinaryTree(
+					5,
+					ds.NewBinaryTree(6, nil, nil),
+					ds.NewBinaryTree(7, nil, nil),
+				),
+			)
+
+			require.False(t, ds.BinaryTreeEqual(leftBT, rightBT))
+		})
+
+		t.Run("false when values are equal but structures are different", func(t *testing.T) {
+			leftBT := ds.NewBinaryTree(
+				1,
+				ds.NewBinaryTree(
+					2,
+					ds.NewBinaryTree(3, nil, nil),
+					ds.NewBinaryTree(4, nil, nil),
+				),
+				ds.NewBinaryTree(
+					5,
+					ds.NewBinaryTree(6, nil, nil),
+					ds.NewBinaryTree(7, nil, nil),
+				),
+			)
+
+			rightBT := ds.NewBinaryTree(
+				1,
+				ds.NewBinaryTree(
+					2,
+					ds.NewBinaryTree(3, nil, nil),
+					nil,
+				),
+				ds.NewBinaryTree(
+					5,
+					ds.NewBinaryTree(6, nil, nil),
+					ds.NewBinaryTree(7, nil, nil),
+				),
+			)
+
+			require.False(t, ds.BinaryTreeEqual(leftBT, rightBT))
+		})
+
+		t.Run("false when one of the trees is nil", func(t *testing.T) {
+			require.False(t, ds.BinaryTreeEqual(nil, ds.NewBinaryTree(1, nil, nil)))
+			require.False(t, ds.BinaryTreeEqual(ds.NewBinaryTree(1, nil, nil), nil))
+		})
+	})
 }
