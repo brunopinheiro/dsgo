@@ -504,4 +504,40 @@ func TestBinaryTree(t *testing.T) {
 
 		require.Equal(t, 15, bt.MaxLevelSum()) // level 2
 	})
+
+	t.Run("all root to leaf paths", func(t *testing.T) {
+		bt := ds.NewBinaryTree(
+			1,
+			ds.NewBinaryTree(
+				3,
+				ds.NewBinaryTree(6, nil, nil),
+				nil,
+			),
+			ds.NewBinaryTree(
+				2,
+				ds.NewBinaryTree(
+					4,
+					ds.NewBinaryTree(11, nil, nil),
+					ds.NewBinaryTree(9, nil, nil),
+				),
+				ds.NewBinaryTree(
+					5,
+					ds.NewBinaryTree(
+						7,
+						ds.NewBinaryTree(8, nil, nil),
+						nil,
+					),
+					ds.NewBinaryTree(13, nil, nil),
+				),
+			),
+		)
+
+		require.ElementsMatch(t, [][]int{
+			{1, 3, 6},
+			{1, 2, 4, 9},
+			{1, 2, 4, 11},
+			{1, 2, 5, 7, 8},
+			{1, 2, 5, 13},
+		}, bt.RootToLeafPaths())
+	})
 }

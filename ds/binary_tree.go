@@ -244,6 +244,38 @@ func (t *BinaryTree) MaxLevelSum() int {
 	return maxSum
 }
 
+func (t *BinaryTree) RootToLeafPaths() [][]int {
+	return binaryTreeRootToLeafPath(t, []*BinaryTree{})
+}
+
+func binaryTreeRootToLeafPath(t *BinaryTree, path []*BinaryTree) [][]int {
+	arrayFromStack := func(stack []*BinaryTree) []int {
+		result := []int{}
+		for _, node := range stack {
+			result = append(result, node.value)
+		}
+		return result
+	}
+
+	if t == nil {
+		return [][]int{}
+	}
+
+	newPath := append(path, t)
+	if t.left == nil && t.right == nil {
+		return [][]int{arrayFromStack(newPath)}
+	}
+
+	paths := [][]int{}
+	if t.left != nil {
+		paths = append(paths, binaryTreeRootToLeafPath(t.left, newPath)...)
+	}
+	if t.right != nil {
+		paths = append(paths, binaryTreeRootToLeafPath(t.right, newPath)...)
+	}
+	return paths
+}
+
 func BinaryTreeEqual(left *BinaryTree, right *BinaryTree) bool {
 	if left == nil && right == nil {
 		return true
