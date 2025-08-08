@@ -12,52 +12,64 @@ func NewBinaryTree(value int, left *BinaryTree, right *BinaryTree) *BinaryTree {
 	return &BinaryTree{value: value, left: left, right: right}
 }
 
-func (t *BinaryTree) DisplayPreorder() string {
+func (t *BinaryTree) hasLeft() bool {
+	return t.left != nil
+}
+
+func (t *BinaryTree) hasRight() bool {
+	return t.right != nil
+}
+
+func (t *BinaryTree) isLeaf() bool {
+	return t.left == nil && t.right == nil
+}
+
+func (t *BinaryTree) DisplayPreOrder() string {
 	// without recursion, we could solve this problem using a queue
 	result := fmt.Sprintf("%d", t.value)
-	if t.left != nil {
-		result += " " + t.left.DisplayPreorder()
+	if t.hasLeft() {
+		result += " " + t.left.DisplayPreOrder()
 	}
 
-	if t.right != nil {
-		result += " " + t.right.DisplayPreorder()
+	if t.hasRight() {
+		result += " " + t.right.DisplayPreOrder()
 	}
 
 	return result
 }
 
-func (t *BinaryTree) DisplayInorder() string {
+func (t *BinaryTree) DisplayInOrder() string {
 	// without recursion, we could solve this problem using a queue
 	result := ""
-	if t.left != nil {
-		result += t.left.DisplayInorder() + " "
+	if t.hasLeft() {
+		result += t.left.DisplayInOrder() + " "
 	}
 
 	result += fmt.Sprintf("%d", t.value)
 
-	if t.right != nil {
-		result += " " + t.right.DisplayInorder()
+	if t.hasRight() {
+		result += " " + t.right.DisplayInOrder()
 	}
 
 	return result
 }
 
-func (t *BinaryTree) DisplayPostorder() string {
+func (t *BinaryTree) DisplayPostOrder() string {
 	// without recursion, we could solve this problem using a queue
 	result := ""
-	if t.left != nil {
-		result += t.left.DisplayPostorder() + " "
+	if t.hasLeft() {
+		result += t.left.DisplayPostOrder() + " "
 	}
 
-	if t.right != nil {
-		result += t.right.DisplayPostorder() + " "
+	if t.hasRight() {
+		result += t.right.DisplayPostOrder() + " "
 	}
 
 	result += fmt.Sprintf("%d", t.value)
 	return result
 }
 
-func (t *BinaryTree) DisplayLevelorder() string {
+func (t *BinaryTree) DisplayLevelOrder() string {
 	result := ""
 	queue := []*BinaryTree{t}
 	for len(queue) > 0 {
@@ -66,10 +78,10 @@ func (t *BinaryTree) DisplayLevelorder() string {
 		}
 		node := queue[0]
 		result += fmt.Sprintf("%d", node.value)
-		if node.left != nil {
+		if node.hasLeft() {
 			queue = append(queue, node.left)
 		}
-		if node.right != nil {
+		if node.hasRight() {
 			queue = append(queue, node.right)
 		}
 		if len(queue) > 0 {
@@ -79,16 +91,16 @@ func (t *BinaryTree) DisplayLevelorder() string {
 	return result
 }
 
-func (t *BinaryTree) DisplayReverseLevelorder() string {
+func (t *BinaryTree) DisplayReverseLevelOrder() string {
 	queue := []*BinaryTree{t}
 	stack := []*BinaryTree{t}
 	for len(queue) > 0 {
 		node := queue[0]
-		if node.right != nil {
+		if node.hasRight() {
 			stack = append(stack, node.right)
 			queue = append(queue, node.right)
 		}
-		if node.left != nil {
+		if node.hasLeft() {
 			stack = append(stack, node.left)
 			queue = append(queue, node.left)
 		}
@@ -111,13 +123,13 @@ func (t *BinaryTree) DisplayReverseLevelorder() string {
 
 func (t *BinaryTree) Max() int {
 	maxValue := t.value
-	if t.left != nil {
+	if t.hasLeft() {
 		leftMax := t.left.Max()
 		if leftMax > maxValue {
 			maxValue = leftMax
 		}
 	}
-	if t.right != nil {
+	if t.hasRight() {
 		rightMax := t.right.Max()
 		if rightMax > maxValue {
 			maxValue = rightMax
@@ -128,7 +140,7 @@ func (t *BinaryTree) Max() int {
 
 func (t *BinaryTree) Contains(value int) bool {
 	// without recursion, we could solve this problem using a queue
-	return t.value == value || (t.left != nil && t.left.Contains(value)) || (t.right != nil && t.right.Contains(value))
+	return t.value == value || (t.hasLeft() && t.left.Contains(value)) || (t.hasRight() && t.right.Contains(value))
 }
 
 func (t *BinaryTree) Add(value int) {
@@ -136,18 +148,18 @@ func (t *BinaryTree) Add(value int) {
 	for {
 		node := queue[0]
 		queue = queue[1:]
-		if node.left == nil && node.right == nil {
+		if node.isLeaf() {
 			node.left = NewBinaryTree(value, nil, nil)
 			break
 		}
-		if node.left != nil {
-			if node.right == nil {
+		if node.hasLeft() {
+			if node.hasRight() {
 				node.right = NewBinaryTree(value, nil, nil)
 				break
 			}
 			queue = append(queue, node.left)
 		}
-		if node.right != nil {
+		if node.hasRight() {
 			queue = append(queue, node.right)
 		}
 	}
@@ -156,10 +168,10 @@ func (t *BinaryTree) Add(value int) {
 func (t *BinaryTree) Size() int {
 	// without recursion, we could solve this problem using a queue
 	size := 1
-	if t.left != nil {
+	if t.hasLeft() {
 		size += t.left.Size()
 	}
-	if t.right != nil {
+	if t.hasRight() {
 		size += t.right.Size()
 	}
 	return size
@@ -167,12 +179,12 @@ func (t *BinaryTree) Size() int {
 
 func (t *BinaryTree) Height() int {
 	leftHeight := 0
-	if t.left != nil {
+	if t.hasLeft() {
 		leftHeight = t.left.Height()
 	}
 
 	rightHeight := 0
-	if t.right != nil {
+	if t.hasRight() {
 		rightHeight = t.right.Height()
 	}
 
@@ -185,10 +197,10 @@ func (t *BinaryTree) DeepestValue() int {
 	for len(queue) > 0 {
 		deepestNode = queue[0]
 		queue = queue[1:]
-		if deepestNode.left != nil {
+		if deepestNode.hasLeft() {
 			queue = append(queue, deepestNode.left)
 		}
-		if deepestNode.right != nil {
+		if deepestNode.hasRight() {
 			queue = append(queue, deepestNode.right)
 		}
 	}
@@ -201,14 +213,14 @@ func (t *BinaryTree) LeafCount() int {
 	for len(queue) > 0 {
 		node := queue[0]
 		queue = queue[1:]
-		if node.left == nil && node.right == nil {
+		if node.isLeaf() {
 			leafs += 1
 			continue
 		}
-		if node.left != nil {
+		if node.hasLeft() {
 			queue = append(queue, node.left)
 		}
-		if node.right != nil {
+		if node.hasRight() {
 			queue = append(queue, node.right)
 		}
 	}
@@ -232,10 +244,10 @@ func (t *BinaryTree) MaxLevelSum() int {
 			maxSum = levelSum
 		}
 		for _, node := range queue {
-			if node.left != nil {
+			if node.hasLeft() {
 				nextQueue = append(nextQueue, node.left)
 			}
-			if node.right != nil {
+			if node.hasRight() {
 				nextQueue = append(nextQueue, node.right)
 			}
 		}
@@ -262,15 +274,15 @@ func binaryTreeRootToLeafPath(t *BinaryTree, path []*BinaryTree) [][]int {
 	}
 
 	newPath := append(path, t)
-	if t.left == nil && t.right == nil {
+	if t.isLeaf() {
 		return [][]int{arrayFromStack(newPath)}
 	}
 
 	paths := [][]int{}
-	if t.left != nil {
+	if t.hasLeft() {
 		paths = append(paths, binaryTreeRootToLeafPath(t.left, newPath)...)
 	}
-	if t.right != nil {
+	if t.hasRight() {
 		paths = append(paths, binaryTreeRootToLeafPath(t.right, newPath)...)
 	}
 	return paths

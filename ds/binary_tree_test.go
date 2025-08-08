@@ -23,7 +23,7 @@ func TestBinaryTree(t *testing.T) {
 			),
 		)
 
-		require.Equal(t, "1 2 4 5 3 6 7", bt.DisplayPreorder())
+		require.Equal(t, "1 2 4 5 3 6 7", bt.DisplayPreOrder())
 	})
 
 	t.Run("display in order", func(t *testing.T) {
@@ -41,7 +41,7 @@ func TestBinaryTree(t *testing.T) {
 			),
 		)
 
-		require.Equal(t, "4 2 5 1 6 3 7", bt.DisplayInorder())
+		require.Equal(t, "4 2 5 1 6 3 7", bt.DisplayInOrder())
 	})
 
 	t.Run("display postorder", func(t *testing.T) {
@@ -59,7 +59,7 @@ func TestBinaryTree(t *testing.T) {
 			),
 		)
 
-		require.Equal(t, "4 5 2 6 7 3 1", bt.DisplayPostorder())
+		require.Equal(t, "4 5 2 6 7 3 1", bt.DisplayPostOrder())
 	})
 
 	t.Run("display levelorder (bft)", func(t *testing.T) {
@@ -77,7 +77,7 @@ func TestBinaryTree(t *testing.T) {
 			),
 		)
 
-		require.Equal(t, "1 2 3 4 5 6 7", bt.DisplayLevelorder())
+		require.Equal(t, "1 2 3 4 5 6 7", bt.DisplayLevelOrder())
 	})
 
 	t.Run("max element", func(t *testing.T) {
@@ -120,19 +120,19 @@ func TestBinaryTree(t *testing.T) {
 	t.Run("add keeps the tree complete", func(t *testing.T) {
 		bt := ds.NewBinaryTree(1, nil, nil)
 		bt.Add(2)
-		require.Equal(t, "1 2", bt.DisplayLevelorder())
+		require.Equal(t, "1 2", bt.DisplayLevelOrder())
 
 		bt.Add(3)
-		require.Equal(t, "1 2 3", bt.DisplayLevelorder())
+		require.Equal(t, "1 2 3", bt.DisplayLevelOrder())
 
 		bt.Add(4)
-		require.Equal(t, "1 2 3 4", bt.DisplayLevelorder())
+		require.Equal(t, "1 2 3 4", bt.DisplayLevelOrder())
 
 		bt.Add(5)
-		require.Equal(t, "1 2 3 4 5", bt.DisplayLevelorder())
+		require.Equal(t, "1 2 3 4 5", bt.DisplayLevelOrder())
 
 		bt.Add(6)
-		require.Equal(t, "1 2 3 4 5 6", bt.DisplayLevelorder())
+		require.Equal(t, "1 2 3 4 5 6", bt.DisplayLevelOrder())
 	})
 
 	t.Run("size", func(t *testing.T) {
@@ -178,7 +178,7 @@ func TestBinaryTree(t *testing.T) {
 			),
 		)
 
-		require.Equal(t, "4 5 6 7 2 3 1", bt.DisplayReverseLevelorder())
+		require.Equal(t, "4 5 6 7 2 3 1", bt.DisplayReverseLevelOrder())
 	})
 
 	t.Run("height", func(t *testing.T) {
