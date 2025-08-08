@@ -215,6 +215,35 @@ func (t *BinaryTree) LeafCount() int {
 	return leafs
 }
 
+func (t *BinaryTree) MaxLevelSum() int {
+	queue := []*BinaryTree{t}
+	maxSum := 0
+	sumQueue := func(queue []*BinaryTree) int {
+		sum := 0
+		for _, node := range queue {
+			sum += node.value
+		}
+		return sum
+	}
+	for len(queue) > 0 {
+		nextQueue := []*BinaryTree{}
+		levelSum := sumQueue(queue)
+		if levelSum > maxSum {
+			maxSum = levelSum
+		}
+		for _, node := range queue {
+			if node.left != nil {
+				nextQueue = append(nextQueue, node.left)
+			}
+			if node.right != nil {
+				nextQueue = append(nextQueue, node.right)
+			}
+		}
+		queue = nextQueue
+	}
+	return maxSum
+}
+
 func BinaryTreeEqual(left *BinaryTree, right *BinaryTree) bool {
 	if left == nil && right == nil {
 		return true

@@ -478,4 +478,30 @@ func TestBinaryTree(t *testing.T) {
 			require.False(t, ds.BinaryTreeEqual(ds.NewBinaryTree(1, nil, nil), nil))
 		})
 	})
+
+	t.Run("max level sum", func(t *testing.T) {
+		bt := ds.NewBinaryTree(
+			1, // level 0
+			ds.NewBinaryTree(
+				3,                             // level 1
+				ds.NewBinaryTree(6, nil, nil), // level 2
+				nil,
+			),
+			ds.NewBinaryTree(
+				2,                             // level 1
+				ds.NewBinaryTree(4, nil, nil), // level 2
+				ds.NewBinaryTree(
+					5, // level 2
+					ds.NewBinaryTree(
+						7,                             // level 3
+						ds.NewBinaryTree(8, nil, nil), // level 4
+						nil,
+					),
+					nil,
+				),
+			),
+		)
+
+		require.Equal(t, 15, bt.MaxLevelSum()) // level 2
+	})
 }
