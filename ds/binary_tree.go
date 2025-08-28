@@ -306,6 +306,20 @@ func (t *BinaryTree) HasPathWithSum(n int) bool {
 	return t.hasRight() && t.right.HasPathWithSum(n-t.value)
 }
 
+func (t *BinaryTree) Sum() int {
+	leftSum := 0
+	if t.hasLeft() {
+		leftSum = t.left.Sum()
+	}
+
+	rightSum := 0
+	if t.hasRight() {
+		rightSum = t.right.Sum()
+	}
+
+	return t.value + leftSum + rightSum
+}
+
 func BinaryTreeEqual(left *BinaryTree, right *BinaryTree) bool {
 	if left == nil && right == nil {
 		return true
