@@ -506,67 +506,17 @@ func TestBinaryTree(t *testing.T) {
 	})
 
 	t.Run("all root to leaf paths", func(t *testing.T) {
-		bt := ds.NewBinaryTree(
-			1,
-			ds.NewBinaryTree(
-				3,
-				ds.NewBinaryTree(6, nil, nil),
-				nil,
-			),
-			ds.NewBinaryTree(
-				2,
-				ds.NewBinaryTree(
-					4,
-					ds.NewBinaryTree(11, nil, nil),
-					ds.NewBinaryTree(9, nil, nil),
-				),
-				ds.NewBinaryTree(
-					5,
-					ds.NewBinaryTree(
-						7,
-						ds.NewBinaryTree(8, nil, nil),
-						nil,
-					),
-					ds.NewBinaryTree(13, nil, nil),
-				),
-			),
-		)
-
 		require.ElementsMatch(t, [][]int{
 			{1, 3, 6},
 			{1, 2, 4, 9},
 			{1, 2, 4, 11},
 			{1, 2, 5, 7, 8},
 			{1, 2, 5, 13},
-		}, bt.RootToLeafPaths())
+		}, commonTestTree().RootToLeafPaths())
 	})
 
 	t.Run("has path with sum", func(t *testing.T) {
-		bt := ds.NewBinaryTree(
-			1,
-			ds.NewBinaryTree(
-				3,
-				ds.NewBinaryTree(6, nil, nil),
-				nil,
-			),
-			ds.NewBinaryTree(
-				2,
-				ds.NewBinaryTree(
-					4,
-					ds.NewBinaryTree(11, nil, nil),
-					ds.NewBinaryTree(9, nil, nil),
-				),
-				ds.NewBinaryTree(
-					5,
-					ds.NewBinaryTree(
-						7,
-						ds.NewBinaryTree(8, nil, nil),
-						nil,
-					),
-					ds.NewBinaryTree(13, nil, nil),
-				),
-			),
-		)
+		bt := commonTestTree()
 
 		require.False(t, bt.HasPathWithSum(0))
 		require.True(t, bt.HasPathWithSum(10))
@@ -576,32 +526,67 @@ func TestBinaryTree(t *testing.T) {
 	})
 
 	t.Run("sum", func(t *testing.T) {
-		bt := ds.NewBinaryTree(
+		require.Equal(t, 69, commonTestTree().Sum())
+	})
+
+	t.Run("mirror", func(t *testing.T) {
+		bt := commonTestTree()
+		expected := ds.NewBinaryTree(
 			1,
-			ds.NewBinaryTree(
-				3,
-				ds.NewBinaryTree(6, nil, nil),
-				nil,
-			),
 			ds.NewBinaryTree(
 				2,
 				ds.NewBinaryTree(
-					4,
-					ds.NewBinaryTree(11, nil, nil),
-					ds.NewBinaryTree(9, nil, nil),
-				),
-				ds.NewBinaryTree(
 					5,
+					ds.NewBinaryTree(13, nil, nil),
 					ds.NewBinaryTree(
 						7,
-						ds.NewBinaryTree(8, nil, nil),
 						nil,
+						ds.NewBinaryTree(8, nil, nil),
 					),
-					ds.NewBinaryTree(13, nil, nil),
 				),
+				ds.NewBinaryTree(
+					4,
+					ds.NewBinaryTree(9, nil, nil),
+					ds.NewBinaryTree(11, nil, nil),
+				),
+			),
+			ds.NewBinaryTree(
+				3,
+				nil,
+				ds.NewBinaryTree(6, nil, nil),
 			),
 		)
 
-		require.Equal(t, 69, bt.Sum())
+		bt.Mirror()
+
+		require.True(t, ds.BinaryTreeEqual(expected, bt))
 	})
+}
+
+func commonTestTree() *ds.BinaryTree {
+	return ds.NewBinaryTree(
+		1,
+		ds.NewBinaryTree(
+			3,
+			ds.NewBinaryTree(6, nil, nil),
+			nil,
+		),
+		ds.NewBinaryTree(
+			2,
+			ds.NewBinaryTree(
+				4,
+				ds.NewBinaryTree(11, nil, nil),
+				ds.NewBinaryTree(9, nil, nil),
+			),
+			ds.NewBinaryTree(
+				5,
+				ds.NewBinaryTree(
+					7,
+					ds.NewBinaryTree(8, nil, nil),
+					nil,
+				),
+				ds.NewBinaryTree(13, nil, nil),
+			),
+		),
+	)
 }

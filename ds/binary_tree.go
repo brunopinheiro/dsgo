@@ -320,6 +320,24 @@ func (t *BinaryTree) Sum() int {
 	return t.value + leftSum + rightSum
 }
 
+func (t *BinaryTree) Mirror() {
+	if t.isLeaf() {
+		return
+	}
+
+	bkp := t.left
+	t.left = t.right
+	t.right = bkp
+
+	if t.hasLeft() {
+		t.left.Mirror()
+	}
+
+	if t.hasRight() {
+		t.right.Mirror()
+	}
+}
+
 func BinaryTreeEqual(left *BinaryTree, right *BinaryTree) bool {
 	if left == nil && right == nil {
 		return true
