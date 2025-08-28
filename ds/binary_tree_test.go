@@ -540,4 +540,37 @@ func TestBinaryTree(t *testing.T) {
 			{1, 2, 5, 13},
 		}, bt.RootToLeafPaths())
 	})
+
+	t.Run("has path with sum", func(t *testing.T) {
+		bt := ds.NewBinaryTree(
+			1,
+			ds.NewBinaryTree(
+				3,
+				ds.NewBinaryTree(6, nil, nil),
+				nil,
+			),
+			ds.NewBinaryTree(
+				2,
+				ds.NewBinaryTree(
+					4,
+					ds.NewBinaryTree(11, nil, nil),
+					ds.NewBinaryTree(9, nil, nil),
+				),
+				ds.NewBinaryTree(
+					5,
+					ds.NewBinaryTree(
+						7,
+						ds.NewBinaryTree(8, nil, nil),
+						nil,
+					),
+					ds.NewBinaryTree(13, nil, nil),
+				),
+			),
+		)
+
+		require.True(t, bt.HasPathWithSum(10))
+		require.True(t, bt.HasPathWithSum(7))
+		require.False(t, bt.HasPathWithSum(5))
+		require.False(t, bt.HasPathWithSum(99))
+	})
 }

@@ -288,6 +288,24 @@ func binaryTreeRootToLeafPath(t *BinaryTree, path []*BinaryTree) [][]int {
 	return paths
 }
 
+func (t *BinaryTree) HasPathWithSum(n int) bool {
+	if t.value == n {
+		return true
+	}
+
+	if t.value > n || t.isLeaf() {
+		return false
+	}
+
+	if t.hasLeft() {
+		if t.left.HasPathWithSum(n - t.value) {
+			return true
+		}
+	}
+
+	return t.hasRight() && t.right.HasPathWithSum(n-t.value)
+}
+
 func BinaryTreeEqual(left *BinaryTree, right *BinaryTree) bool {
 	if left == nil && right == nil {
 		return true
